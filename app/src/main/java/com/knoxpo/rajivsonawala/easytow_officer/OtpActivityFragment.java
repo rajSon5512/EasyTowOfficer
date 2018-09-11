@@ -34,15 +34,11 @@ public class OtpActivityFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.otp_activtiy_fragment,container,false);
 
-        String verificationId=(String)getArguments().getString(KEY);
-
-        Toast.makeText(getActivity(),""+verificationId,Toast.LENGTH_SHORT).show();
-
 
         return view;
 
     }
-
+/*
     public static OtpActivityFragment newInstance(String verificationId) {
 
         OtpActivityFragment simpleFragment=new OtpActivityFragment();
@@ -52,7 +48,7 @@ public class OtpActivityFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+*/
 
 }
 

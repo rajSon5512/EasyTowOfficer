@@ -68,8 +68,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                  *
                  */
                   Intent intent = OtpActivity.getStartIntent(verificationId,getContext());
-
-
                   startActivity(intent);
 
             }
