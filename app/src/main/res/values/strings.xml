@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">EasyTow-Officer</string>
+    <string name="login_hint">Mobile Number</string>
+    <string name="login">Login</string>
+    <string name="otp">OTP Number</string>
+    <string name="next">next</string>
+    <string name="enter_otp">Enter otp</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="resend">resend</string>
+</resources>

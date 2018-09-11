@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "543618750633",
+    "firebase_url": "https://easytowofficer.firebaseio.com",
+    "project_id": "easytowofficer",
+    "storage_bucket": "easytowofficer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543618750633:android:3860fc89cbefd096",
+        "android_client_info": {
+          "package_name": "com.knoxpo.rajivsonawala.easytow_officer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543618750633-np6tfktvj8f9v3oee64nmkdrl7susf9n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo63PNKkJt_DpZrVug2l32A81VzZEysRY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
