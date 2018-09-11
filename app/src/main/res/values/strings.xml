@@ -7,4 +7,5 @@
     <string name="enter_otp">Enter otp</string>
     <string name="sign_out">Sign Out</string>
     <string name="resend">resend</string>
+    <string name="welcome">Welcome Officer</string>
 </resources>

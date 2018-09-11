@@ -11,9 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
@@ -42,7 +48,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                Log.d(TAG, phoneAuthCredential.toString());
+               // Log.d(TAG, phoneAuthCredential.toString());
+                Log.d(TAG, "onVerificationCompleted");
+                signInWithPhoneAuthCredential(phoneAuthCredential);
 
             }
 
@@ -69,6 +77,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                  */
                   Intent intent = OtpActivity.getStartIntent(verificationId,getContext());
                   startActivity(intent);
+                  getActivity().finish();
 
             }
         };
@@ -108,4 +117,35 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 mCallbacks
         );
     }
+
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(task.isSuccessful()){
+
+                            Log.d(TAG, "signInWithCredential:success");
+
+                            FirebaseUser user=task.getResult().getUser();
+
+                            Log.d(TAG, "Logged in user phone: " + user.getPhoneNumber());
+
+                            Intent intent = new Intent(getActivity(), LandingActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+
+                        }else{
+
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                Toast.makeText(getActivity(),"Wrong Number",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
+    }
+
 }

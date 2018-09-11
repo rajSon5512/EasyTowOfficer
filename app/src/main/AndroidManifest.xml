@@ -21,6 +21,8 @@
 
         <activity android:name=".OtpActivity"></activity>
 
+        <activity android:name=".LandingActivity"></activity>
+
     </application>
 
 </manifest>
