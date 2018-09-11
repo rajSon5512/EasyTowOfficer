@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.widget.Toast;
 
-public class OtpActivity extends SingalFragmentActivity {
+public class OtpActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_SOMETHING =" "+OtpActivity.class.getSimpleName();
     private String verificationId;
