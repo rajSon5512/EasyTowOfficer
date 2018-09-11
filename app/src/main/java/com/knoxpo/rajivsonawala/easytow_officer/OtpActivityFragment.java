@@ -34,21 +34,25 @@ public class OtpActivityFragment extends Fragment {
 
         View view=inflater.inflate(R.layout.otp_activtiy_fragment,container,false);
 
+        String Id=getArguments().getString("id");
+
+        Toast.makeText(getActivity(),"Fragment :"+ Id ,Toast.LENGTH_SHORT).show();
+
+
 
         return view;
 
     }
-/*
+
     public static OtpActivityFragment newInstance(String verificationId) {
 
-        OtpActivityFragment simpleFragment=new OtpActivityFragment();
         Bundle args = new Bundle();
-        args.putString(KEY,verificationId);
+        args.putString("id",verificationId);
         OtpActivityFragment fragment = new OtpActivityFragment();
         fragment.setArguments(args);
         return fragment;
     }
-*/
+
 
 }
 

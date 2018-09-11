@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class OtpActivity extends SingalFragmentActivity {
 
     private static final String EXTRA_SOMETHING =" "+OtpActivity.class.getSimpleName();
+    private String verificationId;
 
     public static Intent getStartIntent(String verificationID, Context context){
 
@@ -22,16 +23,17 @@ public class OtpActivity extends SingalFragmentActivity {
 
     @Override
     public Fragment createFragment() {
-        return new OtpActivityFragment();
+
+        return OtpActivityFragment.newInstance(getIntent().getStringExtra(EXTRA_SOMETHING));
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String verificationId=getIntent().getStringExtra(EXTRA_SOMETHING);
+        verificationId=getIntent().getStringExtra(EXTRA_SOMETHING);
 
-        Toast.makeText(this,""+verificationId,Toast.LENGTH_SHORT).show();
+      //  Toast.makeText(this,""+verificationId,Toast.LENGTH_SHORT).show();
 
     }
 }
