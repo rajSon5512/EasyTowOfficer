@@ -51,7 +51,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                // Log.d(TAG, phoneAuthCredential.toString());
                 Log.d(TAG, "onVerificationCompleted");
                 signInWithPhoneAuthCredential(phoneAuthCredential);
-
             }
 
             @Override
