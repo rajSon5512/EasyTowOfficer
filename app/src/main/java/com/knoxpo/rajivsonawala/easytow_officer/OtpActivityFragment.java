@@ -27,11 +27,14 @@ public class OtpActivityFragment extends Fragment implements View.OnClickListene
 
 
     private static final String KEY = ""+OtpActivityFragment.class.getSimpleName() ;
+    private static final String MKEY = "MobileNumber"+OtpActivityFragment.class.getSimpleName();
     private EditText otpNumber;
     private Button nextButton;
     private Button ResendButton;
     private String mverificationID;
     private FirebaseAuth mAuth;
+    private String mMobileNumber;
+    private PhoneAuthProvider.ForceResendingToken mResendingToken;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +52,11 @@ public class OtpActivityFragment extends Fragment implements View.OnClickListene
 
         mverificationID=getArguments().getString(KEY);
 
+        mMobileNumber=getArguments().getString(MKEY);
+
+       // Toast.makeText(getActivity(),"Mobile Number"+mMobileNumber,Toast.LENGTH_SHORT).show();
+
+
         otpNumber=view.findViewById(R.id.otp_number);
         nextButton=view.findViewById(R.id.next_button);
         ResendButton=view.findViewById(R.id.resend_button);
@@ -62,10 +70,11 @@ public class OtpActivityFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public static OtpActivityFragment newInstance(String verificationId) {
+    public static OtpActivityFragment newInstance(String verificationId,String MobileNumber) {
 
         Bundle args = new Bundle();
         args.putString(KEY,verificationId);
+        args.putString(MKEY,MobileNumber);
         OtpActivityFragment fragment = new OtpActivityFragment();
         fragment.setArguments(args);
         return fragment;
@@ -86,6 +95,9 @@ public class OtpActivityFragment extends Fragment implements View.OnClickListene
                         return;
                     }
                     verifyPhoneNumberWithCode(mverificationID,code);
+                    break;
+
+            case R.id.resend_button:
                     break;
 
         }
@@ -118,7 +130,7 @@ public class OtpActivityFragment extends Fragment implements View.OnClickListene
                             Log.w(KEY, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
 
-                                Toast.makeText(getActivity(),"Wrong Number",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Wrong OTP",Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -129,6 +141,9 @@ public class OtpActivityFragment extends Fragment implements View.OnClickListene
 
 
     }
+
+
+
 }
 
 

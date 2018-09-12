@@ -5,16 +5,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 public class OtpActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_SOMETHING =" "+OtpActivity.class.getSimpleName();
     private String verificationId;
+    private String mobileNumber;
 
-    public static Intent getStartIntent(String verificationID, Context context){
+    public static Intent getStartIntent(String verificationID, Context context,String mobileNumber){
 
         Intent intent = new Intent(context, OtpActivity.class);
         intent.putExtra(OtpActivity.EXTRA_SOMETHING, verificationID);
+        intent.putExtra("MobileNumber",mobileNumber);
 
       return intent;
     }
@@ -22,7 +25,7 @@ public class OtpActivity extends SingleFragmentActivity {
     @Override
     public Fragment createFragment() {
 
-        return OtpActivityFragment.newInstance(getIntent().getStringExtra(EXTRA_SOMETHING));
+        return OtpActivityFragment.newInstance(getIntent().getStringExtra(EXTRA_SOMETHING),getIntent().getStringExtra("MobileNumber"));
     }
 
     @Override
@@ -30,8 +33,10 @@ public class OtpActivity extends SingleFragmentActivity {
         super.onCreate(savedInstanceState);
 
         verificationId=getIntent().getStringExtra(EXTRA_SOMETHING);
+        mobileNumber=getIntent().getStringExtra("MobileNumber");
 
-      //  Toast.makeText(this,""+verificationId,Toast.LENGTH_SHORT).show();
+
+     //   Toast.makeText(this,""+mobileNumber,Toast.LENGTH_SHORT).show();
 
     }
 }

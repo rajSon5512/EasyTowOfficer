@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = LoginFragment.class.getSimpleName();
 
-    private TextView mMobileNumber;
+    private EditText mMobileNumber;
     private Button mLoginButton;
     private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -74,7 +75,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                  * OR
                  *
                  */
-                  Intent intent = OtpActivity.getStartIntent(verificationId,getContext());
+                  Intent intent = OtpActivity.getStartIntent(verificationId,getContext(),mMobileNumber.getText().toString());
                   startActivity(intent);
                   getActivity().finish();
 
