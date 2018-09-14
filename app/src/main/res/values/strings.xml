@@ -8,4 +8,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="resend">resend</string>
     <string name="welcome">Welcome Officer</string>
+    <string name="source">SOURCE</string>
+    <string name="destination">DESTINATION</string>
+    <string name="submit">Submit</string>
 </resources>
