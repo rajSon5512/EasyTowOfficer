@@ -1,4 +1,4 @@
-package com.knoxpo.rajivsonawala.easytow_officer;
+package com.knoxpo.rajivsonawala.easytow_officer.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+
+import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 

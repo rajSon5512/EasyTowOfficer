@@ -11,19 +11,17 @@
         android:layout_height="match_parent"
         android:background="@android:color/holo_orange_light">
 
-        <include layout="@layout/fragment_landing_back"></include>
 
 
         <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
 
             <include layout="@layout/fragment_recycler_view"></include>
-
 
 
         </FrameLayout>
@@ -32,8 +30,7 @@
 
 
     <FrameLayout
-
-        android:id="@+id/nav_view"
+        android:id="@+id/landing_nav_container"
         android:layout_gravity="start"
         android:layout_width="250dp"
         android:layout_height="match_parent"

@@ -1,7 +1,5 @@
-package com.knoxpo.rajivsonawala.easytow_officer;
+package com.knoxpo.rajivsonawala.easytow_officer.Activities;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 public class SplashScreenActivity extends AppCompatActivity{
 

@@ -1,4 +1,7 @@
-package com.knoxpo.rajivsonawala.easytow_officer;
+package com.knoxpo.rajivsonawala.easytow_officer.Fragment;
+
+import com.knoxpo.rajivsonawala.easytow_officer.Activities.*;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.knoxpo.rajivsonawala.easytow_officer.Activities.LandingActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.Activities.OtpActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 import java.util.concurrent.TimeUnit;
 

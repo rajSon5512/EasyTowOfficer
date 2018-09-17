@@ -4,9 +4,9 @@
 
     <item
 
-        android:id="@+id/open_nav"
+        android:id="@+id/add_button_menu"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/common_google_signin_btn_icon_light_normal"
+        android:icon="@android:drawable/ic_input_add"
         android:title=""></item>
 
 
