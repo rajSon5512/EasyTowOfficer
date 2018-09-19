@@ -11,7 +11,8 @@ public class SideItemLab {
     public static final long
             SIDE_ITEM_MAIN_SCREEN = 0,
             SIDE_HISTORY_SCREEN = 1,
-            SIDE_SIGN_OUT=2;
+            SIDE_SIGN_OUT=2,
+            SIDE_PROFILE=3;
 
     private static SideItemLab sInstance;
 
@@ -28,6 +29,7 @@ public class SideItemLab {
         mSideItems = new ArrayList<>();
         mSideItems.add(new SideItem(SIDE_ITEM_MAIN_SCREEN, "HOME"));
         mSideItems.add(new SideItem(SIDE_HISTORY_SCREEN, "HISTORY"));
+        mSideItems.add(new SideItem(SIDE_PROFILE,"PROFILE"));
         mSideItems.add(new SideItem(SIDE_SIGN_OUT,"SIGN OUT"));
     }
 

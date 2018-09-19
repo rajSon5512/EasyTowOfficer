@@ -36,8 +36,9 @@ public class LandingFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_landing, container, false);
-        init(v);
+       // init(v);
 
+/*
         mPhoneTV.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
 
         mSignOutBtn.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +50,7 @@ public class LandingFragment extends Fragment {
                 getActivity().finish();
             }
         });
+*/
 
         return v;
     }
@@ -63,9 +65,9 @@ public class LandingFragment extends Fragment {
 
 
 
-    private void init(View v){
+    /*private void init(View v){
         mPhoneTV = v.findViewById(R.id.tv_phone);
         mSignOutBtn = v.findViewById(R.id.btn_sign_out);
     }
-
+*/
 }
