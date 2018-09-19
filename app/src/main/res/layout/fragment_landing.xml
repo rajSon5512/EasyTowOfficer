@@ -21,7 +21,6 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <include layout="@layout/fragment_recycler_view"></include>
 
 
         </FrameLayout>
@@ -30,12 +29,17 @@
 
 
     <FrameLayout
-        android:id="@+id/landing_nav_container"
+        android:id="@+id/nav_container"
         android:layout_gravity="start"
         android:layout_width="250dp"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
         android:fitsSystemWindows="true">
+
+
+        <include layout="@layout/fragment_recycler_view"></include>
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,6 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sign_out" />
+
+
 
 
     </FrameLayout>
