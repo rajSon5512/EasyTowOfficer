@@ -18,7 +18,10 @@ import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.models.SideItem;
 import com.knoxpo.rajivsonawala.easytow_officer.models.SideItemLab;
 
-public class LandingActivity extends AppCompatActivity implements SidebarFragment.CallBack {
+public  class LandingActivity extends AppCompatActivity implements SidebarFragment.CallBack {
+
+
+
 
     private DrawerLayout mDrawerLayout;
     private static final String TAG=""+LandingActivity.class.getSimpleName();
@@ -32,6 +35,9 @@ public class LandingActivity extends AppCompatActivity implements SidebarFragmen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_landing);
+
+
+
 
 
         mDrawerLayout=findViewById(R.id.drawer_layout);

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -65,6 +66,21 @@ public class LandingFragment extends Fragment {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId()==R.id.add_button_menu){
+
+
+            Intent intent=new Intent(getActivity(),Entry_Activity.class);
+            startActivity(intent);
+            getActivity().finish();
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
 
 
     /*private void init(View v){
