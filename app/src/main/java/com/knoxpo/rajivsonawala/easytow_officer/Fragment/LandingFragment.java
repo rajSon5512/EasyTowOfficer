@@ -74,7 +74,7 @@ public class LandingFragment extends Fragment {
 
             Intent intent=new Intent(getActivity(),Entry_Activity.class);
             startActivity(intent);
-            getActivity().finish();
+            //getActivity().finish();
 
         }
 

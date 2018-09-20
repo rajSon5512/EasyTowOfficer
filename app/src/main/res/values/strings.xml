@@ -13,4 +13,5 @@
     <string name="submit">Submit</string>
     <string name="choose_option">Choose and option to enter vehicle number :</string>
     <string name="vehicle_details">Details</string>
+    <string name="vehicle_detail">Vehicle number.</string>
 </resources>
