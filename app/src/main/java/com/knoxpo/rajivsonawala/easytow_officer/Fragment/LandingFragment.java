@@ -3,6 +3,7 @@ package com.knoxpo.rajivsonawala.easytow_officer.Fragment;
 import com.knoxpo.rajivsonawala.easytow_officer.Activities.*;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,16 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.knoxpo.rajivsonawala.easytow_officer.Activities.MainActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
+
+import java.util.ArrayList;
 
 public class LandingFragment extends Fragment {
 
     private TextView mPhoneTV;
     private Button mSignOutBtn;
-
+    private ArrayList<String> mVehicle=new ArrayList<String>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,14 +74,34 @@ public class LandingFragment extends Fragment {
         if(item.getItemId()==R.id.add_button_menu){
 
 
-            Intent intent=new Intent(getActivity(),Entry_Activity.class);
-            startActivity(intent);
+            Intent intent=new Intent(getActivity(),EntryActivity.class);
+            startActivityForResult(intent,1);
             //getActivity().finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode==1){
+
+            if(resultCode==Activity.RESULT_OK){
+
+                if(data.hasExtra("result")){
+
+                    String tempString=data.getExtras().getString("result");
+                    Toast.makeText(getContext(),"vehicle Number:"+data.getExtras().getString("result"),Toast.LENGTH_LONG).show();
+                    mVehicle.add(tempString);
+                }
+
+            }
 
         }
 
 
-        return super.onOptionsItemSelected(item);
     }
 
 

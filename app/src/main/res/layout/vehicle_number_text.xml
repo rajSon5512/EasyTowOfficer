@@ -7,7 +7,7 @@
 
     <EditText
         android:id="@+id/vehicle_number"
-        android:layout_width="match"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/vehicle_detail"
         />

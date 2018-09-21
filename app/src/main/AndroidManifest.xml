@@ -25,9 +25,9 @@
 
         <activity android:name=".Activities.OtpActivity"></activity>
 
-        <activity android:name=".Activities.LandingActivity"></activity>
+        <activity android:name=".Activities.LandingActivity" ></activity>
 
-        <activity android:name=".Activities.Entry_Activity"></activity>
+        <activity android:name=".Activities.EntryActivity"></activity>
 
     </application>
 
