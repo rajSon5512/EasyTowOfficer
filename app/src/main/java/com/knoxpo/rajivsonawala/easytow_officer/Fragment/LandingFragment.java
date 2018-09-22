@@ -182,8 +182,9 @@ public class LandingFragment extends Fragment {
 
         public void bind(int position) {
 
-            mIndexNumber.setText("1");
-            mDetails.setText(mVehicle.get(position));
+            String temp=mVehicle.get(position);
+            mIndexNumber.setText(mVehicle.indexOf(temp)+1);
+            mDetails.setText(temp);
 
         }
     }
