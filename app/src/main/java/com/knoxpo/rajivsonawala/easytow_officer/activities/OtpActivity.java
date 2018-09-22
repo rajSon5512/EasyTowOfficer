@@ -1,6 +1,4 @@
-package com.knoxpo.rajivsonawala.easytow_officer.Activities;
-
-import com.knoxpo.rajivsonawala.easytow_officer.Fragment.*;
+package com.knoxpo.rajivsonawala.easytow_officer.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
-import com.knoxpo.rajivsonawala.easytow_officer.Fragment.OtpActivityFragment;
+import com.knoxpo.rajivsonawala.easytow_officer.fragments.OtpActivityFragment;
 
 public class OtpActivity extends SingleFragmentActivity {
 

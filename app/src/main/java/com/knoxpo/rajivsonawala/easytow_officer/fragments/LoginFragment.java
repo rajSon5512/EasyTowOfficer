@@ -1,6 +1,4 @@
-package com.knoxpo.rajivsonawala.easytow_officer.Fragment;
-
-import com.knoxpo.rajivsonawala.easytow_officer.Activities.*;
+package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
 
 import android.content.Intent;
@@ -25,8 +23,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.knoxpo.rajivsonawala.easytow_officer.Activities.LandingActivity;
-import com.knoxpo.rajivsonawala.easytow_officer.Activities.OtpActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.activities.DrawerActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.activities.OtpActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 import java.util.concurrent.TimeUnit;
@@ -138,7 +136,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
                             Log.d(TAG, "Logged in user phone: " + user.getPhoneNumber());
 
-                            Intent intent = new Intent(getActivity(), LandingActivity.class);
+                            Intent intent = new Intent(getActivity(), DrawerActivity.class);
                             startActivity(intent);
                             getActivity().finish();
 

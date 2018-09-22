@@ -14,4 +14,6 @@
     <string name="choose_option">Choose and option to enter vehicle number :</string>
     <string name="vehicle_details">Details</string>
     <string name="vehicle_detail">Vehicle number.</string>
+    <string name="entry_via_camera">Scan a vehicle number with the help of camera</string>
+    <string name="add_entry">Add Entry</string>
 </resources>

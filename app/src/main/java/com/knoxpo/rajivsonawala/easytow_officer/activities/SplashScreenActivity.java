@@ -1,4 +1,4 @@
-package com.knoxpo.rajivsonawala.easytow_officer.Activities;
+package com.knoxpo.rajivsonawala.easytow_officer.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity{
 
                 }else{
 
-                    Intent intent=new Intent(SplashScreenActivity.this,LandingActivity.class);
+                    Intent intent=new Intent(SplashScreenActivity.this,DrawerActivity.class);
                     startActivity(intent);
                     SplashScreenActivity.this.finish();
 

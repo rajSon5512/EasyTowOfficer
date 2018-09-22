@@ -1,4 +1,4 @@
-package com.knoxpo.rajivsonawala.easytow_officer.Fragment;
+package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

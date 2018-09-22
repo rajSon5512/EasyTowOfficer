@@ -1,6 +1,5 @@
-package com.knoxpo.rajivsonawala.easytow_officer.Activities;
+package com.knoxpo.rajivsonawala.easytow_officer.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,14 +10,16 @@ import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {
 
-
-
     public abstract Fragment createFragment();
+
+    protected int getLayout(){
+        return R.layout.activity_single_fragment;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(getLayout());
 
         FragmentManager fm=getSupportFragmentManager();
         Fragment fragment=fm.findFragmentById(R.id.fragment_container);
@@ -28,7 +29,4 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             fm.beginTransaction().add(R.id.fragment_container,fragment).commit();
         }
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package com.knoxpo.rajivsonawala.easytow_officer.Fragment;
+package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,33 +16,29 @@ import android.widget.EditText;
 
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 
-import static android.support.constraint.Constraints.TAG;
-
 public class EntryFragment extends Fragment {
 
+    private static final String TAG = EntryFragment.class.getSimpleName();
 
-    public static final String TEMP=""+EntryFragment.class.getSimpleName();
     private EditText mVehicleDetails;
     private Callback mCallback;
 
 
-    public interface Callback{
-
-        void getDetails(String text);
-
+    public interface Callback {
+        void onDetailsEntered(String text);
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallback=(Callback) getContext();
+        mCallback = (Callback) getContext();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallback=null;
+        mCallback = null;
     }
 
     @Override
@@ -54,40 +50,28 @@ public class EntryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View v=inflater.inflate(R.layout.entry_page,container,false);
-
-        mVehicleDetails=v.findViewById(R.id.vehicle_details_box);
-
-      return v;
-
+        View v = inflater.inflate(R.layout.fragment_entry, container, false);
+        mVehicleDetails = v.findViewById(R.id.vehicle_details_box);
+        return v;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_entry_activity,menu);
+        inflater.inflate(R.menu.menu_entry_activity, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
-
+        switch (item.getItemId()) {
             case R.id.entry_done_button:
-
-                String value=mVehicleDetails.getText().toString();
-                Log.d(TEMP, "onOptionsItemSelected: "+value);
-                mCallback.getDetails(value);
-
+                String value = mVehicleDetails.getText().toString();
+                Log.d(TAG, "onOptionsItemSelected: " + value);
+                mCallback.onDetailsEntered(value);
                 return true;
-
-             default:
-                 return super.onOptionsItemSelected(item);
-
-
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-
     }
 }
