@@ -118,7 +118,7 @@ public class LandingFragment extends Fragment {
         }
     }
 
-    private class DetailVH extends RecyclerView.ViewHolder {
+    private class DetailVH extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mIndexNumber;
         private TextView mDetails;
@@ -132,6 +132,7 @@ public class LandingFragment extends Fragment {
             mDetails = itemView.findViewById(R.id.vehicle_details);
             mDelete = itemView.findViewById(R.id.entry_delete_button);
             mRight = itemView.findViewById(R.id.true_button);
+            mDelete.setOnClickListener(this);
 
         }
 
@@ -139,6 +140,14 @@ public class LandingFragment extends Fragment {
         public void bind(String entry) {
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
             mDetails.setText(entry);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            mVehicles.remove(getAdapterPosition());
+            //mAdapter.notifyItemRemoved(getAdapterPosition());
+            mAdapter.notifyDataSetChanged();
         }
     }
 
