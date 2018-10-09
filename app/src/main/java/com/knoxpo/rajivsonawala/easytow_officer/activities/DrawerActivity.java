@@ -1,11 +1,14 @@
 package com.knoxpo.rajivsonawala.easytow_officer.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.knoxpo.rajivsonawala.easytow_officer.fragments.HistoryFragment;
 import com.knoxpo.rajivsonawala.easytow_officer.fragments.LandingFragment;
 import com.knoxpo.rajivsonawala.easytow_officer.fragments.ProfileFragment;
@@ -18,7 +21,7 @@ public class DrawerActivity extends ToolbarActivity implements SidebarFragment.C
 
     private DrawerLayout mDrawerLayout;
     private static final String TAG = "" + DrawerActivity.class.getSimpleName();
-
+    private FirebaseAuth firebaseAuth;
    /* @Override
     public Fragment createFragment() {
         return new LandingFragment();
@@ -83,8 +86,10 @@ public class DrawerActivity extends ToolbarActivity implements SidebarFragment.C
 
             Log.d(TAG, "onMenuClicked: " + SideItemLab.SIDE_SIGN_OUT);
 
-
-            mDrawerLayout.closeDrawers();
+            firebaseAuth.getInstance().signOut();
+            Intent intent=new Intent(this,MainActivity.class);
+            startActivity(intent);
+            this.finish();
             return;
         } else {
             fragmentToSwitch = null;
