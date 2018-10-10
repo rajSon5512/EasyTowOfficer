@@ -1,6 +1,8 @@
 package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.knoxpo.rajivsonawala.easytow_officer.R;
+import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
 
 public class EntryFragment extends Fragment implements View.OnClickListener {
 
@@ -25,6 +28,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     private EditText mVehicleDetails;
     private Callback mCallback;
     private ImageButton mImageButton;
+    private int requestcode=1;
 
     @Override
     public void onClick(View view) {
@@ -32,15 +36,13 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         switch(view.getId()){
 
             case R.id.camera_Button:
-                Toast.makeText(getActivity(),"Camera button Click",Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(getActivity(),OcrCaptureActivity.class);
+                startActivityForResult(intent,requestcode);
                 break;
-
-
         }
 
 
     }
-
     public interface Callback {
         void onDetailsEntered(String text);
     }
@@ -101,4 +103,14 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode==1 && resultCode== Activity.RESULT_OK){
+
+           mVehicleDetails.setText(data.getStringExtra("MyString"));
+
+        }
+
+    }
 }

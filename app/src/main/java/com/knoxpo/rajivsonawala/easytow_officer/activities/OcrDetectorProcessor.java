@@ -15,6 +15,11 @@
  */
 package com.knoxpo.rajivsonawala.easytow_officer.activities;
 
+import android.util.Log;
+import android.util.SparseArray;
+
+import com.google.android.gms.vision.Detector;
+import com.google.android.gms.vision.text.TextBlock;
 import com.knoxpo.rajivsonawala.easytow_officer.ui.camera.GraphicOverlay;
 
 /**
@@ -22,13 +27,43 @@ import com.knoxpo.rajivsonawala.easytow_officer.ui.camera.GraphicOverlay;
  * as OcrGraphics.
  * TODO: Make this implement Detector.Processor<TextBlock> and add text to the GraphicOverlay
  */
-public class OcrDetectorProcessor {
 
+public class OcrDetectorProcessor implements Detector.Processor<TextBlock> {
+
+    private static final String Log = "recognized Text";
     private GraphicOverlay<OcrGraphic> graphicOverlay;
+    private String recognizedString;
+
 
     OcrDetectorProcessor(GraphicOverlay<OcrGraphic> ocrGraphicOverlay) {
         graphicOverlay = ocrGraphicOverlay;
     }
 
+    public void receiveDetections(Detector.Detections<TextBlock> detections) {
+        graphicOverlay.clear();
+        SparseArray<TextBlock> items = detections.getDetectedItems();
+        for (int i = 0; i < items.size(); ++i) {
+            TextBlock item = items.valueAt(i);
+            if (item != null && item.getValue() != null) {
+
+                recognizedString=item.getValue();
+                android.util.Log.d(Log, "receiveDetections: "+item.getValue());
+                  OcrGraphic graphic = new OcrGraphic(graphicOverlay, item);
+                  graphicOverlay.add(graphic);
+            }
+        }
+    }
+
+
+
+    public void release() {
+        graphicOverlay.clear();
+    }
+
+    public String getMyString(){
+
+        return recognizedString;
+
+    }
     // TODO:  Once this implements Detector.Processor<TextBlock>, implement the abstract methods.
 }
