@@ -13,16 +13,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 
-public class EntryFragment extends Fragment {
+public class EntryFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = EntryFragment.class.getSimpleName();
 
     private EditText mVehicleDetails;
     private Callback mCallback;
+    private ImageButton mImageButton;
 
+    @Override
+    public void onClick(View view) {
+
+        switch(view.getId()){
+
+            case R.id.camera_Button:
+                Toast.makeText(getActivity(),"Camera button Click",Toast.LENGTH_LONG).show();
+                break;
+
+
+        }
+
+
+    }
 
     public interface Callback {
         void onDetailsEntered(String text);
@@ -51,9 +68,18 @@ public class EntryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_entry, container, false);
-        mVehicleDetails = v.findViewById(R.id.vehicle_details_box);
+        init(v);
+
+        mImageButton.setOnClickListener(this);
+
         return v;
     }
+
+    private void init(View v) {
+
+        mVehicleDetails = v.findViewById(R.id.vehicle_details_box);
+        mImageButton=v.findViewById(R.id.camera_Button);
+     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -74,4 +100,5 @@ public class EntryFragment extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }
