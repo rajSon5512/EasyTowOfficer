@@ -24,11 +24,11 @@ import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
 public class EntryFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = EntryFragment.class.getSimpleName();
-
     private EditText mVehicleDetails;
     private Callback mCallback;
     private ImageButton mImageButton;
     private int requestcode=1;
+
 
     @Override
     public void onClick(View view) {

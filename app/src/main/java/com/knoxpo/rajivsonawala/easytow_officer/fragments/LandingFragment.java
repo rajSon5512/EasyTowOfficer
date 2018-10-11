@@ -24,14 +24,17 @@ import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 public class LandingFragment extends Fragment {
 
     private static final int
             REQUEST_NEW_ENTRY = 0;
 
-    private ArrayList<String> mVehicles = new ArrayList<String>();
+    private ArrayList mVehicles = new ArrayList();
     private RecyclerView mRecyclerView;
     private DetailsAdapter mAdapter;
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -56,6 +59,14 @@ public class LandingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+      /*  if(savedInstanceState!=null){
+
+            mVehicles=savedInstanceState.getCharSequenceArrayList("myVehicle");
+            mAdapter.notifyDataSetChanged();
+        }
+*/
+
     }
 
     @Nullable
@@ -109,7 +120,7 @@ public class LandingFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull DetailVH holder, int position) {
-            holder.bind(mVehicles.get(position));
+            holder.bind((String)mVehicles.get(position));
         }
 
         @Override
@@ -156,5 +167,13 @@ public class LandingFragment extends Fragment {
         for (int i = 0; i < mVehicles.size(); i++) {
             Log.d("temp", ": " + mVehicles.get(i));
         }
+
     }
+
+  /*  @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntegerArrayList("myVehicle",mVehicles);
+
+    }*/
 }

@@ -21,16 +21,36 @@
     </com.knoxpo.rajivsonawala.easytow_officer.ui.camera.CameraSourcePreview>
 
     <RelativeLayout
+        android:layout_gravity="bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/Ok_Button"
-            android:layout_width="wrap_content"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_done_black_24dp"/>
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/text_recognized"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/common_google_signin_btn_text_dark_default"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Hello World" />
+
+            <ImageButton
+                android:id="@+id/Ok_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_done_black_24dp" />
+
+
+        </LinearLayout>
+
 
 
     </RelativeLayout>

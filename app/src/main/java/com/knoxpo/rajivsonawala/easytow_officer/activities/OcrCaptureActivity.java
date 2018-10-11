@@ -39,6 +39,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -84,6 +85,7 @@ public final class OcrCaptureActivity extends AppCompatActivity implements View.
     // A TextToSpeech engine for speaking a String value.
     private TextToSpeech tts;
 
+    private TextView mTextRecognized;
     private ImageButton mOkbutton;
     private int requestCode=1;
     private String recognizedString;
@@ -125,7 +127,9 @@ public final class OcrCaptureActivity extends AppCompatActivity implements View.
     private void init() {
 
         mOkbutton=findViewById(R.id.Ok_Button);
+        mTextRecognized=findViewById(R.id.text_recognized);
         mOkbutton.setOnClickListener(this);
+        mTextRecognized.setOnClickListener(this);
     }
 
     /**
@@ -208,6 +212,17 @@ public final class OcrCaptureActivity extends AppCompatActivity implements View.
                     .setFlashMode(useFlash? Camera.Parameters.FLASH_MODE_TORCH:null)
                     .setFocusMode(autoFocus?Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO:null)
                     .build();
+/*
+
+        recognizedString=ocrDetectorProcessor.getMyString();
+
+        if(recognizedString!=null){
+
+            Log.d(TAG, "createCameraSource: Khyati");
+            mTextRecognized.setText(recognizedString);
+
+        }
+*/
 
 
     }
@@ -338,12 +353,20 @@ public final class OcrCaptureActivity extends AppCompatActivity implements View.
 
         recognizedString=ocrDetectorProcessor.getMyString();
 
-        Log.d(TAG, "onClick: "+recognizedString);
+        switch(view.getId()){
 
-        Intent intent=new Intent();
-        intent.putExtra("MyString",recognizedString);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+            case R.id.Ok_Button:
+
+                Log.d(TAG, "onClick: "+recognizedString);
+                Intent intent=new Intent();
+                intent.putExtra("MyString",recognizedString);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
+                break;
+
+            case R.id.text_recognized:mTextRecognized.setText(recognizedString);
+                        break;
+        }
     }
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {

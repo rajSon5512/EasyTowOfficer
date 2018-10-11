@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "543618750633-efk3gnbaa7dg973k5nv37jvb0a5v5ldu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knoxpo.rajivsonawala.easytow_officer",
+            "certificate_hash": "300db660868ebfd202d94e6b4f4e3627ec527cbe"
+          }
+        },
+        {
+          "client_id": "543618750633-7kra7c4ri7uiem4gdgu9tkj002hpohc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knoxpo.rajivsonawala.easytow_officer",
+            "certificate_hash": "1f41be11d294c4bc0858831ae32febaaad47817b"
+          }
+        },
+        {
+          "client_id": "543618750633-mq8g6k7nveekbdd182cc7ujqof5l4ein.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.knoxpo.rajivsonawala.easytow_officer",
+            "certificate_hash": "452fdad2d7d950460b92d4270bf9f06c5e40de46"
+          }
+        },
+        {
           "client_id": "543618750633-np6tfktvj8f9v3oee64nmkdrl7susf9n.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +53,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543618750633-np6tfktvj8f9v3oee64nmkdrl7susf9n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
