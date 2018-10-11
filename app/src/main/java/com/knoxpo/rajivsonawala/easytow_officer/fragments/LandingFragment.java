@@ -19,12 +19,22 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-import static android.content.ContentValues.TAG;
+import static android.support.constraint.Constraints.TAG;
+
 
 public class LandingFragment extends Fragment {
 
@@ -34,7 +44,9 @@ public class LandingFragment extends Fragment {
     private ArrayList mVehicles = new ArrayList();
     private RecyclerView mRecyclerView;
     private DetailsAdapter mAdapter;
-
+    private FirebaseFirestore db;
+    private CollectionReference collectionReference;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -60,12 +72,8 @@ public class LandingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-      /*  if(savedInstanceState!=null){
-
-            mVehicles=savedInstanceState.getCharSequenceArrayList("myVehicle");
-            mAdapter.notifyDataSetChanged();
-        }
-*/
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        collectionReference = firebaseFirestore.collection("VehicleNumber");
 
     }
 
@@ -102,6 +110,8 @@ public class LandingFragment extends Fragment {
     }
 
 
+
+
     private class DetailsAdapter extends RecyclerView.Adapter<DetailVH> {
 
         private LayoutInflater mInflater;
@@ -120,7 +130,7 @@ public class LandingFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull DetailVH holder, int position) {
-            holder.bind((String)mVehicles.get(position));
+            holder.bind((String) mVehicles.get(position));
         }
 
         @Override
@@ -129,7 +139,7 @@ public class LandingFragment extends Fragment {
         }
     }
 
-    private class DetailVH extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class DetailVH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView mIndexNumber;
         private TextView mDetails;

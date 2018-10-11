@@ -18,8 +18,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class EntryFragment extends Fragment implements View.OnClickListener {
 
@@ -28,6 +41,9 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     private Callback mCallback;
     private ImageButton mImageButton;
     private int requestcode=1;
+    private FirebaseFirestore db;
+    private CollectionReference collectionReference;
+    private String value;
 
 
     @Override
@@ -64,6 +80,11 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        db=FirebaseFirestore.getInstance();
+        collectionReference=db.collection("VehicleNumber");
+
+
     }
 
     @Nullable
@@ -94,14 +115,60 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
         switch (item.getItemId()) {
             case R.id.entry_done_button:
-                String value = mVehicleDetails.getText().toString();
+                value = mVehicleDetails.getText().toString();
                 Log.d(TAG, "onOptionsItemSelected: " + value);
-                mCallback.onDetailsEntered(value);
+                fireStoreAdd(value);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    private void fireStoreAdd(String entryName) {
+
+        Map<String, Object> vehiclelist = new HashMap<>();
+
+        vehiclelist.put("text", entryName);
+        Log.d(TAG, "fireStoreAdd: " + entryName);
+
+      /*  FirebaseFirestore.getInstance()
+                .collection("")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
+                    }
+                });
+
+        FirebaseFirestore.getInstance()
+                .collection("")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                    }
+                });
+*/
+        FirebaseFirestore.getInstance().collection("VehicleNumber")
+                .add(vehiclelist)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Success");
+                        mCallback.onDetailsEntered(value);
+                        documentReference.getId();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "onFailure: ");
+                        e.printStackTrace();
+                    }
+                });
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

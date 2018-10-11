@@ -357,9 +357,8 @@ public final class OcrCaptureActivity extends AppCompatActivity implements View.
 
             case R.id.Ok_Button:
 
-                Log.d(TAG, "onClick: "+recognizedString);
                 Intent intent=new Intent();
-                intent.putExtra("MyString",recognizedString);
+                intent.putExtra("MyString",mTextRecognized.getText());
                 setResult(Activity.RESULT_OK, intent);
                 finish();
                 break;
