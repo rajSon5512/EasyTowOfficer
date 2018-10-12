@@ -87,10 +87,11 @@ public class DrawerActivity extends ToolbarActivity implements SidebarFragment.C
             Log.d(TAG, "onMenuClicked: " + SideItemLab.SIDE_SIGN_OUT);
 
             firebaseAuth.getInstance().signOut();
-            Intent intent=new Intent(this,MainActivity.class);
+            Intent intent=new Intent(this,EmailLoginActivity.class);
             startActivity(intent);
             this.finish();
             return;
+
         } else {
             fragmentToSwitch = null;
         }
