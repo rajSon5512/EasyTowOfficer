@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="entry_button_size">64dp</dimen>
+    <dimen name="big_font_size">25sp</dimen>
+    <dimen name="medium_font_size">20sp</dimen>
+    <dimen name="small_font_size">20sp</dimen>
+
+
 </resources>

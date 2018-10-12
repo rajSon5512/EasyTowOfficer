@@ -13,6 +13,11 @@
         <item name="android:background">@android:color/holo_blue_bright</item>
     </style>
 
+    <style name="bigfontsize">
+
+        <item name="android:layout_width">@dimen/big_font_size</item>
+
+    </style>
 
 
 </resources>

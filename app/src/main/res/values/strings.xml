@@ -32,5 +32,6 @@
     <string name="email_message">Email address</string>
     <string name="password">Password</string>
     <string name="forget_password">Forget password</string>
+    <string name="vehicle_status">status</string>
 
 </resources>
