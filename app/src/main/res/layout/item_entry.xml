@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:weightSum="100"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
@@ -14,77 +15,100 @@
         android:singleLine="true"
         tools:text="1234234234234" />
 
-    <TextView
-        android:id="@+id/vehicle_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/big_font_size"
-        tools:text="Hello World" />
-
 
     <LinearLayout
+        android:layout_weight="100"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
+        <TextView
+            android:id="@+id/vehicle_details"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/big_font_size"
+            tools:text="vehicle_number" />
 
         <TextView
-            android:id="@+id/vehicle_owner_name"
-            android:layout_width="wrap_content"
+            android:id="@+id/owner_name"
+            android:layout_width="match_parent"
+            android:padding="5dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/medium_font_size"
-            android:text="khyati"/>
+            tools:text="owner name" />
+
 
         <TextView
-            android:id="@+id/owner_mobile_number"
-            android:layout_width="wrap_content"
+            android:id="@+id/mobile_number"
+            android:padding="5dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/medium_font_size"
-            android:text="raj"/>
+            tools:text="mobile number" />
+
 
 
     </LinearLayout>
 
+
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_weight="30"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-     <TextView
 
-         android:id="@+id/date_and_time"
+    <LinearLayout
         android:layout_gravity="right"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="android date"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/vehicle_status"
+        <TextView
+            android:id="@+id/date_and_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/vehicle_status"/>
+            android:textSize="@dimen/medium_font_size"
+            android:padding="5dp"
+            android:layout_gravity="right"
+            android:text="android date" />
 
 
 
         <LinearLayout
-        android:layout_gravity="right"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-       <ImageButton
-        android:id="@+id/entry_delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:src="@drawable/ic_delete" />
+            android:padding="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/true_button"
-        android:layout_gravity="bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_done_black_24dp" />
+            <ImageButton
+                android:id="@+id/entry_delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:src="@drawable/ic_delete" />
+
+            <ImageButton
+                android:id="@+id/true_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:src="@drawable/ic_done_black_24dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:padding="10dp"
+            android:id="@+id/vehicle_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/vehicle_status" />
+
 
     </LinearLayout>
 

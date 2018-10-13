@@ -150,7 +150,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                     }
                 });
 */
-        FirebaseFirestore.getInstance().collection("VehicleNumber")
+        FirebaseFirestore.getInstance().collection("Vehicles")
                 .add(vehiclelist)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

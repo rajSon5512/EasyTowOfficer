@@ -73,7 +73,7 @@ public class LandingFragment extends Fragment {
         setHasOptionsMenu(true);
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("VehicleNumber");
+        collectionReference = firebaseFirestore.collection("Vehicles");
 
     }
 
