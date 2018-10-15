@@ -106,9 +106,13 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
                 break;
 
            case R.id.forget_password_message:
-               if(mEmailAddress.getText()==null){
 
-                        Toast.makeText(getContext(),"Email Field Empty",Toast.LENGTH_LONG).show();
+               String emailId=mEmailAddress.getText().toString();
+
+               if(emailId.matches("")){
+
+                        Toast.makeText(getContext(),"Email Field Empty",Toast.LENGTH_SHORT).show();
+
 
                 }else{
 
