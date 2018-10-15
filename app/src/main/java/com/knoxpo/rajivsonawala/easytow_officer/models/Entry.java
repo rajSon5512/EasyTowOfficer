@@ -2,8 +2,11 @@ package com.knoxpo.rajivsonawala.easytow_officer.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class Entry implements Parcelable {
 
@@ -21,6 +24,11 @@ public class Entry implements Parcelable {
         mMobileNumber=document.get("owner_number").toString();
         mVehicleType=Integer.parseInt(document.get("vehicle_type").toString());
 
+
+        Log.d(TAG, "Entry: "+mOwnerName);
+        Log.d(TAG, "Entry: "+mVehicleType);
+
+
         if(mVehicleType==2){
 
             mFine=100;
@@ -36,11 +44,28 @@ public class Entry implements Parcelable {
 
     }
 
-    public String getId() {
-        return mId;
+    protected Entry(Parcel in) {
+        mId = in.readString();
+        mVehicleNumber = in.readString();
+        mOwnerName = in.readString();
+        mMobileNumber = in.readString();
+        mVehicleType = in.readInt();
+        mFine = in.readInt();
     }
 
-    public String getmId() {
+    public static final Creator<Entry> CREATOR = new Creator<Entry>() {
+        @Override
+        public Entry createFromParcel(Parcel in) {
+            return new Entry(in);
+        }
+
+        @Override
+        public Entry[] newArray(int size) {
+            return new Entry[size];
+        }
+    };
+
+    public String getId() {
         return mId;
     }
 
@@ -75,6 +100,7 @@ public class Entry implements Parcelable {
 
         parcel.writeString(this.mId);
         parcel.writeString(this.mVehicleNumber);
+        parcel.writeString(this.mOwnerName);
         parcel.writeString(this.mMobileNumber);
         parcel.writeInt(this.mVehicleType);
         parcel.writeInt(this.mFine);

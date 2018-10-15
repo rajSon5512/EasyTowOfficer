@@ -36,7 +36,7 @@ public class EntryActivity extends ToolbarActivity implements EntryFragment.Call
             Intent returnIntent=new Intent();
             returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT,entry);
             setResult(Activity.RESULT_OK,returnIntent);
-
+            finish();
 
     }
 

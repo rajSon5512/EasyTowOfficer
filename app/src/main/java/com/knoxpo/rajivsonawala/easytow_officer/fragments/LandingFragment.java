@@ -94,6 +94,7 @@ public class LandingFragment extends Fragment {
     private void init(View v) {
         mRecyclerView = v.findViewById(R.id.rv_entry);
         mAdapter = new DetailsAdapter();
+
     }
 
 
@@ -105,7 +106,7 @@ public class LandingFragment extends Fragment {
 
             Entry entry=data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
 
-            mVehicles.add(entry.getmVehicleNumber());
+            mVehicles.add(entry);
             printArrayList();
             mAdapter.notifyDataSetChanged();
 
@@ -138,7 +139,7 @@ public class LandingFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull DetailVH holder, int position) {
-            holder.bind((String) mVehicles.get(position));
+            holder.bind((Entry)mVehicles.get(position));
         }
 
         @Override
@@ -153,6 +154,8 @@ public class LandingFragment extends Fragment {
         private TextView mDetails;
         private ImageButton mDelete;
         private ImageButton mRight;
+        private TextView mOwnerName,mMobileNumber,mDate;
+
 
 
         DetailVH(View itemView) {
@@ -161,14 +164,23 @@ public class LandingFragment extends Fragment {
             mDetails = itemView.findViewById(R.id.vehicle_details);
             mDelete = itemView.findViewById(R.id.entry_delete_button);
             mRight = itemView.findViewById(R.id.true_button);
+            mMobileNumber=itemView.findViewById(R.id.mobile_number);
+            mOwnerName=itemView.findViewById(R.id.owner_name_view);
+            mDate=itemView.findViewById(R.id.date_and_time);
             mDelete.setOnClickListener(this);
 
         }
 
 
-        public void bind(String entry) {
+        public void bind(Entry entry) {
+
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
-            mDetails.setText(entry);
+            mDetails.setText(entry.getmVehicleNumber());
+            mMobileNumber.setText(entry.getmMobileNumber());
+            Log.d(TAG, "bind: "+entry.getmOwnerName());
+            Log.d(TAG, "bind: "+entry.getmMobileNumber());
+            mOwnerName.setText(entry.getmOwnerName());
+
         }
 
 

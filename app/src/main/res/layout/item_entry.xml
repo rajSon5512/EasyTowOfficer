@@ -31,7 +31,7 @@
             tools:text="vehicle_number" />
 
         <TextView
-            android:id="@+id/owner_name"
+            android:id="@+id/owner_name_view"
             android:layout_width="match_parent"
             android:padding="5dp"
             android:layout_height="wrap_content"

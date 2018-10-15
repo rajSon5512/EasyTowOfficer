@@ -196,6 +196,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
             case R.id.entry_done_button:
                 Log.d(TAG, "onOptionsItemSelected: " + mVehicleNumber);
                 fireStoreAdd(entry);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
