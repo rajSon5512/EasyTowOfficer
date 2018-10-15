@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,8 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
 
         mAuth= FirebaseAuth.getInstance();
 
+
+
     }
 
     @Nullable
@@ -66,17 +69,18 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
 
-       switch(view.getId()){
+        String email=mEmailAddress.getText().toString();
+        String password=mPassword.getText().toString();
+
+        switch(view.getId()){
 
            case R.id.login_action_button:
-                if(mEmailAddress.getText()==null || mPassword.getText()==null){
+                if(email.matches("")|| password.matches("")){
 
                     Toast.makeText(getContext(),"Email/Passord Field Empty",Toast.LENGTH_LONG).show();
 
                 }else{
 
-                    String email=mEmailAddress.getText().toString();
-                    String password=mPassword.getText().toString();
 
                     mAuth.signInWithEmailAndPassword(email,password)
                             .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -90,6 +94,7 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
 
                                         Intent intent=new Intent(getActivity(),DrawerActivity.class);
                                         startActivity(intent);
+                                        getActivity().finish();
 
                                     }else{
 
@@ -141,4 +146,6 @@ public class EmailLoginFragment extends Fragment implements View.OnClickListener
 
 
     }
+
+
 }

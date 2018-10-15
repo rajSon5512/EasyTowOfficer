@@ -33,5 +33,10 @@
     <string name="password">Password</string>
     <string name="forget_password">Forget password</string>
     <string name="vehicle_status">status</string>
+    <string name="vehicle_owner_name">Owner Name :</string>
+    <string name="fetch_info">fetch</string>
+    <string name="owner_mobile_number">Mobile Number :</string>
+    <string name="vehicle_type">Vehicle Type :</string>
+    <string name="Fine">Fine :</string>
 
 </resources>

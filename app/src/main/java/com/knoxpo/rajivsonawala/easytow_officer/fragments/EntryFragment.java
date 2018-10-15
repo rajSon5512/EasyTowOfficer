@@ -14,14 +14,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -43,8 +48,10 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     private int requestcode=1;
     private FirebaseFirestore db;
     private CollectionReference collectionReference;
-    private String value;
-
+    private String mVehicleNumber;
+    private Button mFetchInfo;
+    private DocumentReference documentReference;
+    private TextView mOwnerName,mOwnerMobileNumber,mVehicleType,mFine;
 
     @Override
     public void onClick(View view) {
@@ -55,6 +62,49 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                 Intent intent=new Intent(getActivity(),OcrCaptureActivity.class);
                 startActivityForResult(intent,requestcode);
                 break;
+
+            case R.id.fetch_info_button:
+
+                Log.d(TAG, "onClick: "+mVehicleNumber);
+
+                mVehicleNumber = mVehicleDetails.getText().toString();
+
+                documentReference=db.collection("vehicles").document(mVehicleNumber);
+
+                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                            if(task.isSuccessful()){
+
+                                DocumentSnapshot documentSnapshot=task.getResult();
+
+                                if(documentSnapshot.exists()){
+
+                                    Log.d(TAG, "owner_name: "+documentSnapshot.get("owner_name"));
+                                    mOwnerName.setText((CharSequence) documentSnapshot.get("owner_name"));
+                                    mOwnerMobileNumber.setText(documentSnapshot.get("owner_number").toString());
+                                    mVehicleType.setText(documentSnapshot.get("vehicle_type").toString());
+                                    mFine.setText("100");
+
+                                }
+
+
+                                Log.d(TAG, "Fetch_Info:Completed");
+
+                            }else{
+
+                                Log.d(TAG, "Fetch_Info:Failed ");
+
+                            }
+
+
+                        }
+
+                    });
+
+                break;
+
         }
 
 
@@ -82,8 +132,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
 
         db=FirebaseFirestore.getInstance();
-        collectionReference=db.collection("VehicleNumber");
-
+        collectionReference=db.collection("tickets");
 
     }
 
@@ -94,6 +143,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         init(v);
 
         mImageButton.setOnClickListener(this);
+        mFetchInfo.setOnClickListener(this);
 
         return v;
     }
@@ -102,7 +152,13 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
         mVehicleDetails = v.findViewById(R.id.vehicle_details_box);
         mImageButton=v.findViewById(R.id.camera_Button);
-     }
+        mFetchInfo=v.findViewById(R.id.fetch_info_button);
+        mVehicleType=v.findViewById(R.id.vehicle_type);
+        mOwnerName=v.findViewById(R.id.owner_name);
+        mOwnerMobileNumber=v.findViewById(R.id.owner_mobile_number);
+        mFine=v.findViewById(R.id.fine);
+
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -115,9 +171,8 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
         switch (item.getItemId()) {
             case R.id.entry_done_button:
-                value = mVehicleDetails.getText().toString();
-                Log.d(TAG, "onOptionsItemSelected: " + value);
-                fireStoreAdd(value);
+                Log.d(TAG, "onOptionsItemSelected: " + mVehicleNumber);
+                fireStoreAdd(mVehicleNumber);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -156,7 +211,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Success");
-                        mCallback.onDetailsEntered(value);
+                        mCallback.onDetailsEntered(mVehicleNumber);
                         documentReference.getId();
                     }
                 })
@@ -180,4 +235,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
+
+
 }
