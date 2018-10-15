@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.knoxpo.rajivsonawala.easytow_officer.fragments.EntryFragment;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
 
 public class EntryActivity extends ToolbarActivity implements EntryFragment.Callback {
 
@@ -30,15 +31,13 @@ public class EntryActivity extends ToolbarActivity implements EntryFragment.Call
     }
 
     @Override
-    public void onDetailsEntered(String text) {
-        if (!text.isEmpty()) {
+    public void onDetailsEntered(Entry entry) {
 
             Intent returnIntent=new Intent();
-            returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT,text);
+            returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT,entry);
             setResult(Activity.RESULT_OK,returnIntent);
 
-            finish();
-        }
+
     }
 
     @Override

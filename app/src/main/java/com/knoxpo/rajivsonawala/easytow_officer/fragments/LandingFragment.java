@@ -28,6 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,11 +102,18 @@ public class LandingFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_NEW_ENTRY && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
-            String entryName = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
+
+            Entry entry=data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
+
+            mVehicles.add(entry.getmVehicleNumber());
+            printArrayList();
+            mAdapter.notifyDataSetChanged();
+
+            /*String entryName = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
             Toast.makeText(getContext(), "vehicle Number:" + data.getStringExtra(Intent.EXTRA_RETURN_RESULT), Toast.LENGTH_LONG).show();
             mVehicles.add(entryName);
             printArrayList();
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();*/
         }
     }
 
