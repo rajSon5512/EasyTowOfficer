@@ -37,6 +37,7 @@ import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -128,8 +129,6 @@ public class LandingFragment extends Fragment {
 
                         for(int i=0;i<documents.size();i++){
 
-                            Log.d(TAG, "onSuccess: "+documents.size());
-
                             Log.d(TAG, "onSuccess: "+documents.get(i).get("vehicle_id"));
                             String vehicleNumber=documents.get(i).get("vehicle_id").toString();
                             firebaseFirestore.collection("vehicles").document(vehicleNumber)
@@ -144,12 +143,10 @@ public class LandingFragment extends Fragment {
 
                                 }
                             });
-
-
                         }
                     }
-                });
 
+                });
 
     }
 
