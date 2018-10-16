@@ -23,9 +23,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
@@ -35,7 +39,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -48,7 +54,6 @@ public class LandingFragment extends Fragment {
     private ArrayList mVehicles = new ArrayList();
     private RecyclerView mRecyclerView;
     private DetailsAdapter mAdapter;
-    private FirebaseFirestore db;
     private CollectionReference collectionReference;
     private FirebaseFirestore firebaseFirestore;
 
@@ -83,8 +88,9 @@ public class LandingFragment extends Fragment {
 
         }
 
+
         firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("Vehicles");
+        collectionReference = firebaseFirestore.collection("tickets");
 
     }
 
@@ -99,6 +105,52 @@ public class LandingFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         return v;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        String uuid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        Timestamp timestamp=new Timestamp(new Date());
+
+        collectionReference.whereEqualTo("raised_by",uuid)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+
+                        Log.d(TAG, "onSuccess: "+documents.size());
+
+                        for(int i=0;i<documents.size();i++){
+
+                            Log.d(TAG, "onSuccess: "+documents.size());
+
+                            Log.d(TAG, "onSuccess: "+documents.get(i).get("vehicle_id"));
+                            String vehicleNumber=documents.get(i).get("vehicle_id").toString();
+                            firebaseFirestore.collection("vehicles").document(vehicleNumber)
+                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                    Entry entry=new Entry(documentSnapshot);
+
+                                    mVehicles.add(entry);
+                                    mRecyclerView.getAdapter().notifyDataSetChanged();
+
+                                }
+                            });
+
+
+                        }
+                    }
+                });
+
+
     }
 
     private void init(View v) {

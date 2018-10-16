@@ -30,9 +30,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
@@ -230,7 +232,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         vehiclelist.put("Fine",entry.getmFine());
         vehiclelist.put("raised_by",uid);
         vehiclelist.put("vehicle_id",entry.getmVehicleNumber());
-
+        vehiclelist.put("date", FieldValue.serverTimestamp());
       /*  FirebaseFirestore.getInstance()
                 .collection("")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {

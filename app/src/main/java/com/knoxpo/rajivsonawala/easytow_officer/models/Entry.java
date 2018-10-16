@@ -26,7 +26,13 @@ public class Entry implements Parcelable {
         mOwnerName=document.get("owner_name").toString();
         mMobileNumber=document.get("owner_number").toString();
         mVehicleType=Integer.parseInt(document.get("vehicle_type").toString());
-        mDate=new Date();
+        mDate=(Date)document.get("date");
+
+            if(mDate==null){
+
+                mDate=new Date();
+
+            }
 
 
         Log.d(TAG, "Entry: "+mOwnerName);
@@ -55,6 +61,7 @@ public class Entry implements Parcelable {
         mMobileNumber = in.readString();
         mVehicleType = in.readInt();
         mFine = in.readInt();
+        mDate = new Date(in.readLong());
     }
 
     public static final Creator<Entry> CREATOR = new Creator<Entry>() {
@@ -114,5 +121,6 @@ public class Entry implements Parcelable {
         parcel.writeString(this.mMobileNumber);
         parcel.writeInt(this.mVehicleType);
         parcel.writeInt(this.mFine);
+        parcel.writeLong(mDate.getTime());
     }
 }
