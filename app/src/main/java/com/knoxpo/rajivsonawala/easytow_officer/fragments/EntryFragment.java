@@ -59,6 +59,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     private DocumentReference documentReference;
     private TextView mOwnerName,mOwnerMobileNumber,mVehicleType,mFine;
     private Entry entry;
+    private  Boolean fetchingComplet =false;
 
     @Override
     public void onClick(View view) {
@@ -90,10 +91,10 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
                                     entry=new Entry(documentSnapshot);
 
-                                    Log.d(TAG, "owner_name: "+documentSnapshot.get("owner_name"));
-                                    mOwnerName.setText((CharSequence) documentSnapshot.get("owner_name"));
-                                    mOwnerMobileNumber.setText(documentSnapshot.get("owner_number").toString());
-                                    mVehicleType.setText(documentSnapshot.get("vehicle_type").toString());
+                                    Log.d(TAG, "owner_name: "+entry.getmOwnerName());
+                                    mOwnerName.setText(entry.getmOwnerName());
+                                    mOwnerMobileNumber.setText(entry.getmMobileNumber());
+                                    mVehicleType.setText(String.valueOf(entry.getmVehicleType()));
 
                                     int vehicletype=Integer.parseInt(mVehicleType.getText().toString());
 
@@ -110,14 +111,23 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                                         mFine.setText("200");
                                     }
 
+                                    Log.d(TAG, "Fetch_Info:Completed");
+                                    fetchingComplet = true;
+                                    getActivity().invalidateOptionsMenu();
                                 }
+                                else {
 
+                                    Log.d(TAG, "Fetch_Info:Failed ");
+                                    fetchingComplet=false;
+                                    getActivity().invalidateOptionsMenu();
+                                    Toast.makeText(getContext(),"Vehicle Not Register.",Toast.LENGTH_SHORT).show();
 
-                                Log.d(TAG, "Fetch_Info:Completed");
+                                }
 
                             }else{
 
                                 Log.d(TAG, "Fetch_Info:Failed ");
+                                Toast.makeText(getContext(),"Vehicle Not Register.",Toast.LENGTH_SHORT).show();
 
                             }
 
@@ -129,7 +139,6 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                 break;
 
         }
-
 
     }
     public interface Callback {
@@ -157,6 +166,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         db=FirebaseFirestore.getInstance();
         collectionReference=db.collection("tickets");
 
+
     }
 
     @Nullable
@@ -180,23 +190,28 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         mOwnerName=v.findViewById(R.id.owner_name);
         mOwnerMobileNumber=v.findViewById(R.id.owner_mobile_number);
         mFine=v.findViewById(R.id.fine);
-
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_entry_activity, menu);
+
+        MenuItem menuItem=menu.findItem(R.id.entry_done_button);
+
+        if(fetchingComplet) {
+            menuItem.setVisible(true);
+        }else {
+            menuItem.setVisible(false);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.entry_done_button:
                 Log.d(TAG, "onOptionsItemSelected: " + mVehicleNumber);
                 fireStoreAdd(entry);
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -211,7 +226,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         Map<String, Object> vehiclelist = new HashMap<>();
 
         vehiclelist.put("current_status", "unpaid");
-        vehiclelist.put("date",new Date());
+        vehiclelist.put("date",entry.getmDate());
         vehiclelist.put("Fine",entry.getmFine());
         vehiclelist.put("raised_by",uid);
         vehiclelist.put("vehicle_id",entry.getmVehicleNumber());

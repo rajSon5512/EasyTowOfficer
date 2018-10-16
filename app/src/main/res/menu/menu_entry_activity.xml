@@ -6,6 +6,7 @@
         android:id="@+id/entry_done_button"
         android:icon="@drawable/ic_done_black_24dp"
         android:title="Submit"
+        android:visible="false"
         app:showAsAction="ifRoom">
   </item>
 

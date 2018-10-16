@@ -30,7 +30,10 @@ import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +75,13 @@ public class LandingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        if(savedInstanceState!=null){
+
+            Toast.makeText(getContext(),"hello",Toast.LENGTH_SHORT).show();
+            mVehicles=savedInstanceState.getParcelableArrayList("myvehicles");
+
+        }
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         collectionReference = firebaseFirestore.collection("Vehicles");
@@ -174,6 +184,7 @@ public class LandingFragment extends Fragment {
 
         public void bind(Entry entry) {
 
+
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
             mDetails.setText(entry.getmVehicleNumber());
             mMobileNumber.setText(entry.getmMobileNumber());
@@ -182,6 +193,7 @@ public class LandingFragment extends Fragment {
             mOwnerName.setText(entry.getmOwnerName());
 
         }
+
 
 
         @Override
@@ -200,10 +212,13 @@ public class LandingFragment extends Fragment {
 
     }
 
-  /*  @Override
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putIntegerArrayList("myVehicle",mVehicles);
+        outState.putParcelableArrayList("myvehicles",mVehicles);
 
-    }*/
+    }
+
+
+
 }

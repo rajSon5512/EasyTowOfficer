@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.Date;
+
 import static android.support.constraint.Constraints.TAG;
 
 public class Entry implements Parcelable {
@@ -16,6 +18,7 @@ public class Entry implements Parcelable {
      private String mMobileNumber;
     private int mVehicleType;
     private int mFine;
+    private Date mDate;
 
     public Entry(DocumentSnapshot document){
         mId = document.getId();
@@ -23,6 +26,7 @@ public class Entry implements Parcelable {
         mOwnerName=document.get("owner_name").toString();
         mMobileNumber=document.get("owner_number").toString();
         mVehicleType=Integer.parseInt(document.get("vehicle_type").toString());
+        mDate=new Date();
 
 
         Log.d(TAG, "Entry: "+mOwnerName);
@@ -90,6 +94,12 @@ public class Entry implements Parcelable {
         return mFine;
     }
 
+    public Date getmDate(){
+
+        return mDate;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -104,6 +114,5 @@ public class Entry implements Parcelable {
         parcel.writeString(this.mMobileNumber);
         parcel.writeInt(this.mVehicleType);
         parcel.writeInt(this.mFine);
-
     }
 }
