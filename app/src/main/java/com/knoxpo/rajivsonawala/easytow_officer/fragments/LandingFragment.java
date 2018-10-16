@@ -78,7 +78,7 @@ public class LandingFragment extends Fragment {
 
         if(savedInstanceState!=null){
 
-            Toast.makeText(getContext(),"hello",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getContext(),"hello",Toast.LENGTH_SHORT).show();
             mVehicles=savedInstanceState.getParcelableArrayList("myvehicles");
 
         }
@@ -115,8 +115,7 @@ public class LandingFragment extends Fragment {
         if (requestCode == REQUEST_NEW_ENTRY && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
             Entry entry=data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
-
-            mVehicles.add(entry);
+             mVehicles.add(entry);
             printArrayList();
             mAdapter.notifyDataSetChanged();
 
