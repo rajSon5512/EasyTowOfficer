@@ -12,14 +12,18 @@ import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 public class HistoryFragment extends Fragment {
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
         View v=inflater.inflate(R.layout.fragment_history,container,false);
-
-
         return v;
     }
 }

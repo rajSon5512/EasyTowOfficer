@@ -38,5 +38,6 @@
     <string name="owner_mobile_number">Mobile Number :</string>
     <string name="vehicle_type">Vehicle Type :</string>
     <string name="Fine">Fine :</string>
+    <string name="to">TO</string>
 
 </resources>

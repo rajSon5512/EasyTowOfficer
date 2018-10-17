@@ -253,6 +253,9 @@ public class LandingFragment extends Fragment {
             Log.d(TAG, "bind: " + entry.getmMobileNumber());
             mOwnerName.setText(entry.getmOwnerName());
 
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
+            mDate.setText(simpleDateFormat.format(entry.getmDate()));
+
         }
 
 
