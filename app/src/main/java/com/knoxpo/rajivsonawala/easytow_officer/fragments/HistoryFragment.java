@@ -1,5 +1,7 @@
 package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +16,9 @@ import android.widget.Toast;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 import java.net.DatagramPacket;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class HistoryFragment extends Fragment implements View.OnClickListener {
 
@@ -59,6 +64,20 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                 datePickerFragment.show(fragmentManager,DIALOG_DATE);
                 break;
 
+
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode==REQUEST_DATE && resultCode== Activity.RESULT_OK){
+
+            Calendar calendar=(Calendar)data.getSerializableExtra("selected_date");
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
+            Date date1=calendar.getTime();
+            mStartButton.setText(simpleDateFormat.format(date1));
 
         }
 
