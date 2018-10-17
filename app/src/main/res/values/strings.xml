@@ -39,5 +39,6 @@
     <string name="vehicle_type">Vehicle Type :</string>
     <string name="Fine">Fine :</string>
     <string name="to">TO</string>
+    <string name="data_picker">Data Picker</string>
 
 </resources>
