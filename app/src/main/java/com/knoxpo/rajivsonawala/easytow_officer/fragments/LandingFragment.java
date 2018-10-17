@@ -36,6 +36,7 @@ import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -82,10 +83,10 @@ public class LandingFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
 
-           // Toast.makeText(getContext(),"hello",Toast.LENGTH_SHORT).show();
-            mVehicles=savedInstanceState.getParcelableArrayList("myvehicles");
+            // Toast.makeText(getContext(),"hello",Toast.LENGTH_SHORT).show();
+            mVehicles = savedInstanceState.getParcelableArrayList("myvehicles");
 
         }
 
@@ -114,29 +115,37 @@ public class LandingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        String uuid=FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        Timestamp timestamp=new Timestamp(new Date());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-        collectionReference.whereEqualTo("raised_by",uuid)
+        Date date = calendar.getTime();
+
+        collectionReference
+                .whereGreaterThan("date", date)
+                .whereEqualTo("raised_by",uid)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
 
-                        Log.d(TAG, "onSuccess: "+documents.size());
+                        Log.d(TAG, "onSuccess: " + documents.size());
 
-                        for(int i=0;i<documents.size();i++){
+                        for (int i = 0; i < documents.size(); i++) {
 
-                            Log.d(TAG, "onSuccess: "+documents.get(i).get("vehicle_id"));
-                            String vehicleNumber=documents.get(i).get("vehicle_id").toString();
+                            String vehicleNumber = documents.get(i).get("vehicle_id").toString();
                             firebaseFirestore.collection("vehicles").document(vehicleNumber)
                                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                                    Entry entry=new Entry(documentSnapshot);
+                                    Entry entry = new Entry(documentSnapshot);
 
                                     mVehicles.add(entry);
                                     mRecyclerView.getAdapter().notifyDataSetChanged();
@@ -146,6 +155,13 @@ public class LandingFragment extends Fragment {
                         }
                     }
 
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        e.printStackTrace();
+                        Log.d(TAG, e.getMessage());
+                    }
                 });
 
     }
@@ -163,8 +179,8 @@ public class LandingFragment extends Fragment {
 
         if (requestCode == REQUEST_NEW_ENTRY && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
-            Entry entry=data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
-             mVehicles.add(entry);
+            Entry entry = data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
+            mVehicles.add(entry);
             printArrayList();
             mAdapter.notifyDataSetChanged();
 
@@ -175,8 +191,6 @@ public class LandingFragment extends Fragment {
             mAdapter.notifyDataSetChanged();*/
         }
     }
-
-
 
 
     private class DetailsAdapter extends RecyclerView.Adapter<DetailVH> {
@@ -197,7 +211,7 @@ public class LandingFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull DetailVH holder, int position) {
-            holder.bind((Entry)mVehicles.get(position));
+            holder.bind((Entry) mVehicles.get(position));
         }
 
         @Override
@@ -212,8 +226,7 @@ public class LandingFragment extends Fragment {
         private TextView mDetails;
         private ImageButton mDelete;
         private ImageButton mRight;
-        private TextView mOwnerName,mMobileNumber,mDate;
-
+        private TextView mOwnerName, mMobileNumber, mDate;
 
 
         DetailVH(View itemView) {
@@ -222,9 +235,9 @@ public class LandingFragment extends Fragment {
             mDetails = itemView.findViewById(R.id.vehicle_details);
             mDelete = itemView.findViewById(R.id.entry_delete_button);
             mRight = itemView.findViewById(R.id.true_button);
-            mMobileNumber=itemView.findViewById(R.id.mobile_number);
-            mOwnerName=itemView.findViewById(R.id.owner_name_view);
-            mDate=itemView.findViewById(R.id.date_and_time);
+            mMobileNumber = itemView.findViewById(R.id.mobile_number);
+            mOwnerName = itemView.findViewById(R.id.owner_name_view);
+            mDate = itemView.findViewById(R.id.date_and_time);
             mDelete.setOnClickListener(this);
 
         }
@@ -236,12 +249,11 @@ public class LandingFragment extends Fragment {
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
             mDetails.setText(entry.getmVehicleNumber());
             mMobileNumber.setText(entry.getmMobileNumber());
-            Log.d(TAG, "bind: "+entry.getmOwnerName());
-            Log.d(TAG, "bind: "+entry.getmMobileNumber());
+            Log.d(TAG, "bind: " + entry.getmOwnerName());
+            Log.d(TAG, "bind: " + entry.getmMobileNumber());
             mOwnerName.setText(entry.getmOwnerName());
 
         }
-
 
 
         @Override
@@ -263,10 +275,9 @@ public class LandingFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("myvehicles",mVehicles);
+        outState.putParcelableArrayList("myvehicles", mVehicles);
 
     }
-
 
 
 }
