@@ -126,6 +126,8 @@ public class LandingFragment extends Fragment {
 
         Date date = calendar.getTime();
 
+        Log.d(TAG, "onViewCreated: "+date);
+
         collectionReference
                 .whereGreaterThan("date", date)
                 .whereEqualTo("raised_by",uid)
