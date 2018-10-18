@@ -123,6 +123,7 @@ public class LandingFragment extends Fragment {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.AM,1);
 
         Date date = calendar.getTime();
 

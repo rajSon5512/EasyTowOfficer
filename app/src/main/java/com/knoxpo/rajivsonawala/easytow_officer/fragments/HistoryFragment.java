@@ -15,6 +15,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 
 import java.net.DatagramPacket;
@@ -23,6 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -97,6 +104,17 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                      endDate=format.parse(mEndButton.getText().toString());
                      startDate=format.parse(mStartButton.getText().toString());
 
+                     Calendar calendar=Calendar.getInstance();
+                     calendar.setTime(endDate);
+
+                     calendar.set(Calendar.HOUR,12);
+                     calendar.set(Calendar.MINUTE,59);
+                     calendar.set(Calendar.SECOND,59);
+
+                     endDate=calendar.getTime();
+
+                    Log.d(TAG, "DATE: "+startDate+" End Date"+endDate);
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -104,10 +122,34 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
                 if((startDate.before(endDate) || startDate.equals(endDate)) && (endDate.before(new Date()) || endDate.equals(new Date()))){
 
+
+                    Log.d(TAG, "Start Date: "+startDate+"End date:"+endDate);
+
                     Toast.makeText(getContext(),"TRUE",Toast.LENGTH_SHORT).show();
 
+                    FirebaseFirestore.getInstance().collection("tickets")
+                            .whereGreaterThanOrEqualTo("date",startDate)
+                            .whereLessThanOrEqualTo("date",endDate)
+                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                    }else{
+                            List<DocumentSnapshot> documentSnapshots=queryDocumentSnapshots.getDocuments();
+
+                            Log.d(TAG, "Documents Size: "+documentSnapshots.size());
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            e.printStackTrace();
+                        }
+
+                    });
+
+
+                }else{
 
                         Toast.makeText(getContext(),"Invalid Date Selected.",Toast.LENGTH_SHORT).show();
 
