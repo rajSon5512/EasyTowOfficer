@@ -7,12 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -22,11 +27,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
 
 import java.net.DatagramPacket;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +48,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private static final int REQUEST_START_DATE=0;
     private static final int REQUEST_END_DATE=1;
     private ImageButton mGoButton;
+    private RecyclerView mRecyclerView;
+    private Adapter mAdapter;
+    private ArrayList mVehicleHistoryList=new ArrayList();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +67,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         mStartButton.setOnClickListener(this);
         mEndButton.setOnClickListener(this);
         mGoButton.setOnClickListener(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(new HistoryAdapter());
+
         return v;
     }
 
@@ -65,7 +78,75 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         mStartButton=v.findViewById(R.id.start_date);
         mEndButton=v.findViewById(R.id.end_date);
         mGoButton=v.findViewById(R.id.go_button);
+        mRecyclerView=v.findViewById(R.id.rv_entry);
     }
+
+
+    public class HistoryAdapter extends RecyclerView.Adapter<HistoryViewHolder>{
+
+        private LayoutInflater inflater;
+
+
+        public HistoryAdapter(){
+
+            inflater=LayoutInflater.from(getActivity());
+
+        }
+
+        @NonNull
+        @Override
+        public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v=inflater.inflate(R.layout.item_entry,parent,false);
+            return new HistoryViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
+            holder.bind((Entry)mVehicleHistoryList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mVehicleHistoryList.size();
+        }
+    }
+
+
+    public class HistoryViewHolder  extends RecyclerView.ViewHolder{
+
+        private TextView mIndexNumber;
+        private TextView mDetails;
+        private ImageButton mDelete;
+        private ImageButton mRight;
+        private TextView mOwnerName, mMobileNumber, mDate;
+
+        public HistoryViewHolder(View itemView) {
+            super(itemView);
+            mIndexNumber = itemView.findViewById(R.id.entry_no);
+            mDetails = itemView.findViewById(R.id.vehicle_details);
+            mDelete = itemView.findViewById(R.id.entry_delete_button);
+            mRight = itemView.findViewById(R.id.true_button);
+            mMobileNumber = itemView.findViewById(R.id.mobile_number);
+            mOwnerName = itemView.findViewById(R.id.owner_name_view);
+            mDate = itemView.findViewById(R.id.date_and_time);
+        }
+
+        public void bind(Entry entry){
+
+            mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
+            mDetails.setText(entry.getmVehicleNumber());
+            mMobileNumber.setText(entry.getmMobileNumber());
+            mOwnerName.setText(entry.getmOwnerName());
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
+            mDate.setText(simpleDateFormat.format(entry.getmDate()));
+
+        }
+
+
+    }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -74,8 +155,6 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         DatePickerFragment datePickerFragment;
 
         switch (view.getId()){
-
-
 
             case R.id.start_date:
 
@@ -138,6 +217,40 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
                             Log.d(TAG, "Documents Size: "+documentSnapshots.size());
 
+                            for(int i=0;i<documentSnapshots.size();i++){
+
+                                Date date1 = null;
+                                String vehiclenumber=documentSnapshots.get(i).get("vehicle_id").toString();
+                                String documentDate=documentSnapshots.get(i).get("date").toString();
+
+                                DateFormat format1=new SimpleDateFormat("dd-MM-yyy");
+                                try {
+                                    date1=format1.parse(documentDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                final Date finalDate = date1;
+                                FirebaseFirestore.getInstance().collection("vehicles")
+                                        .document(vehiclenumber).get()
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                                Entry entry=new Entry(documentSnapshot);
+                                                entry.setDate(finalDate);
+                                                mVehicleHistoryList.add(entry);
+                                                mRecyclerView.getAdapter().notifyDataSetChanged();
+
+                                            }
+                                        });
+
+
+
+
+                            }
+
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -180,3 +293,4 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     }
 
 }
+;

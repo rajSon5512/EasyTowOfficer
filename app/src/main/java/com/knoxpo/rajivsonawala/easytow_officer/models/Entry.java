@@ -106,6 +106,11 @@ public class Entry implements Parcelable {
         return mDate;
     }
 
+    public void setDate(Date date){
+
+        mDate=date;
+
+    }
 
     @Override
     public int describeContents() {
@@ -123,4 +128,7 @@ public class Entry implements Parcelable {
         parcel.writeInt(this.mFine);
         parcel.writeLong(mDate.getTime());
     }
+
+
+
 }
