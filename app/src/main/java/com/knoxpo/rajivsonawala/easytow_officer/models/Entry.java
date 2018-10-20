@@ -28,7 +28,7 @@ public class Entry implements Parcelable {
         mVehicleType=Integer.parseInt(document.get("vehicle_type").toString());
         mDate=(Date)document.get("date");
 
-            if(mDate==null){
+        if(mDate==null){
 
                 mDate=new Date();
 
@@ -37,6 +37,7 @@ public class Entry implements Parcelable {
 
         Log.d(TAG, "Entry: "+mOwnerName);
         Log.d(TAG, "Entry: "+mVehicleType);
+
 
 
         if(mVehicleType==2){
@@ -109,6 +110,8 @@ public class Entry implements Parcelable {
     public void setDate(Date date){
 
         mDate=date;
+        Log.d(TAG, "setDate: "+mDate);
+
 
     }
 

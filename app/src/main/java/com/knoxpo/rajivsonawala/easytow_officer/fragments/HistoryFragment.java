@@ -51,6 +51,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private RecyclerView mRecyclerView;
     private Adapter mAdapter;
     private ArrayList mVehicleHistoryList=new ArrayList();
+    private Date mDateForEntry = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -152,7 +153,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
 
         FragmentManager fragmentManager;
-        DatePickerFragment datePickerFragment;
+        final DatePickerFragment datePickerFragment;
 
         switch (view.getId()){
 
@@ -175,9 +176,17 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
             case R.id.go_button:
 
+                if(mVehicleHistoryList.size()!=0){
+
+                    mVehicleHistoryList.clear();
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+
+                }
+
+
                 Date startDate=null;
                 Date endDate=null;
-                DateFormat format=new SimpleDateFormat("dd-MM-yyyy");
+                final DateFormat format=new SimpleDateFormat("dd-MM-yyyy");
                 try {
 
                      endDate=format.parse(mEndButton.getText().toString());
@@ -214,31 +223,23 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                             List<DocumentSnapshot> documentSnapshots=queryDocumentSnapshots.getDocuments();
-
                             Log.d(TAG, "Documents Size: "+documentSnapshots.size());
 
                             for(int i=0;i<documentSnapshots.size();i++){
 
-                                Date date1 = null;
                                 String vehiclenumber=documentSnapshots.get(i).get("vehicle_id").toString();
-                                String documentDate=documentSnapshots.get(i).get("date").toString();
+                                final Date documentDate= (Date) documentSnapshots.get(i).get("date");
 
-                                DateFormat format1=new SimpleDateFormat("dd-MM-yyy");
-                                try {
-                                    date1=format1.parse(documentDate);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
+                                Log.d(TAG, "documentDate: "+documentDate);
 
-                                final Date finalDate = date1;
                                 FirebaseFirestore.getInstance().collection("vehicles")
                                         .document(vehiclenumber).get()
                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
-                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            public void onSuccess(DocumentSnapshot documentSnapshotForVehicle) {
 
-                                                Entry entry=new Entry(documentSnapshot);
-                                                entry.setDate(finalDate);
+                                                Entry entry=new Entry(documentSnapshotForVehicle);
+                                                entry.setDate(documentDate);
                                                 mVehicleHistoryList.add(entry);
                                                 mRecyclerView.getAdapter().notifyDataSetChanged();
 
