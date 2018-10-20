@@ -87,7 +87,6 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         private LayoutInflater inflater;
 
-
         public HistoryAdapter(){
 
             inflater=LayoutInflater.from(getActivity());
