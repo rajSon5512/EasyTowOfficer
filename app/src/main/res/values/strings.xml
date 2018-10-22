@@ -40,5 +40,7 @@
     <string name="Fine">Fine :</string>
     <string name="to">TO</string>
     <string name="data_picker">Data Picker</string>
+    <string name="note">Note</string>
+    <string name="pending">pending</string>
 
 </resources>

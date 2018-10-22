@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,11 +55,17 @@ public class LandingFragment extends Fragment {
     private static final int
             REQUEST_NEW_ENTRY = 0;
 
+    private static final int REQUEST_FOR_STATUS=1;
+
+    private static final String DIALOG_STATUS="status";
+
     private ArrayList mVehicles = new ArrayList();
     private RecyclerView mRecyclerView;
     private DetailsAdapter mAdapter;
     private CollectionReference collectionReference;
     private FirebaseFirestore firebaseFirestore;
+    private String mVehicleStatus="pendding";
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -193,6 +201,12 @@ public class LandingFragment extends Fragment {
             printArrayList();
             mAdapter.notifyDataSetChanged();*/
         }
+        else if(requestCode==REQUEST_FOR_STATUS && resultCode==Activity.RESULT_OK && data.hasExtra("status")){
+
+                mVehicleStatus=data.getStringExtra("status");
+                mAdapter.notifyDataSetChanged();
+        }
+
     }
 
 
@@ -230,7 +244,7 @@ public class LandingFragment extends Fragment {
         private ImageButton mDelete;
         private ImageButton mRight;
         private TextView mOwnerName, mMobileNumber, mDate;
-
+        private Button mStatus;
 
         DetailVH(View itemView) {
             super(itemView);
@@ -242,6 +256,8 @@ public class LandingFragment extends Fragment {
             mOwnerName = itemView.findViewById(R.id.owner_name_view);
             mDate = itemView.findViewById(R.id.date_and_time);
             mDelete.setOnClickListener(this);
+            mStatus=itemView.findViewById(R.id.vehicle_status);
+            mStatus.setOnClickListener(this);
 
         }
 
@@ -255,18 +271,34 @@ public class LandingFragment extends Fragment {
             Log.d(TAG, "bind: " + entry.getmOwnerName());
             Log.d(TAG, "bind: " + entry.getmMobileNumber());
             mOwnerName.setText(entry.getmOwnerName());
-
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
             mDate.setText(simpleDateFormat.format(entry.getmDate()));
+            mStatus.setText(mVehicleStatus);
 
         }
 
 
         @Override
         public void onClick(View v) {
-            mVehicles.remove(getAdapterPosition());
-            //mAdapter.notifyItemRemoved(getAdapterPosition());
-            mAdapter.notifyDataSetChanged();
+
+            switch (v.getId()) {
+
+                case R.id.entry_delete_button:
+                    mVehicles.remove(getAdapterPosition());
+                    //mAdapter.notifyItemRemoved(getAdapterPosition());
+                      mAdapter.notifyDataSetChanged();
+                      break;
+
+                case R.id.vehicle_status:
+                    mVehicleStatus=mStatus.getText().toString();
+                    FragmentManager fragmentManager=getFragmentManager();
+                    StatusShowFragment statusShowFragment=StatusShowFragment.newInstance(mVehicleStatus);
+                    statusShowFragment.setTargetFragment(LandingFragment.this,REQUEST_FOR_STATUS);
+                    statusShowFragment.show(fragmentManager,DIALOG_STATUS);
+                    break;
+
+
+            }
         }
     }
 
