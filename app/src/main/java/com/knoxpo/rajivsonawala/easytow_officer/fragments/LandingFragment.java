@@ -19,53 +19,44 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
-import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import static android.support.constraint.Constraints.TAG;
 
 
 public class LandingFragment extends Fragment {
 
+    private static final String STATE_TICKETS = "STATE_TICKETS";
+
     private static final int
             REQUEST_NEW_ENTRY = 0;
 
-    private static final int REQUEST_FOR_STATUS=1;
+    private static final int REQUEST_FOR_STATUS = 1;
 
-    private static final String DIALOG_STATUS="status";
+    private static final String DIALOG_STATUS = "status";
 
-    private ArrayList mVehicles = new ArrayList();
+    private ArrayList<Ticket> mTickets = new ArrayList();
     private RecyclerView mRecyclerView;
     private DetailsAdapter mAdapter;
     private CollectionReference collectionReference;
     private FirebaseFirestore firebaseFirestore;
-    private String mVehicleStatus="pendding";
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -94,7 +85,7 @@ public class LandingFragment extends Fragment {
         if (savedInstanceState != null) {
 
             // Toast.makeText(getContext(),"hello",Toast.LENGTH_SHORT).show();
-            mVehicles = savedInstanceState.getParcelableArrayList("myvehicles");
+            //mTickets = savedInstanceState.getParcelableArrayList(STATE_TICKETS);
 
         }
 
@@ -131,15 +122,15 @@ public class LandingFragment extends Fragment {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.AM,1);
+        calendar.set(Calendar.AM, 1);
 
         Date date = calendar.getTime();
 
-        Log.d(TAG, "onViewCreated: "+date);
+        Log.d(TAG, "onViewCreated: " + date);
 
         collectionReference
-                .whereGreaterThan("date", date)
-                .whereEqualTo("raised_by",uid)
+                .whereGreaterThan(Ticket.FIELD_DATE, date)
+                .whereEqualTo(Ticket.FIELD_RAISED_BY, uid)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -150,22 +141,22 @@ public class LandingFragment extends Fragment {
 
                         for (int i = 0; i < documents.size(); i++) {
 
-                            String vehicleNumber = documents.get(i).get("vehicle_id").toString();
-                            firebaseFirestore.collection("vehicles").document(vehicleNumber)
-                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            final Ticket ticket = new Ticket(documents.get(i));
 
-                                    Entry entry = new Entry(documentSnapshot);
-
-                                    mVehicles.add(entry);
-                                    mRecyclerView.getAdapter().notifyDataSetChanged();
-
-                                }
-                            });
+                            FirebaseFirestore.getInstance()
+                                    .collection(Vehicle.COLLECTION_NAME)
+                                    .document(ticket.getVehicleId())
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            Vehicle vehicle = new Vehicle(documentSnapshot);
+                                            ticket.setVehicle(vehicle);
+                                        }
+                                    });
+                            mTickets.add(ticket);
                         }
                     }
-
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -174,7 +165,6 @@ public class LandingFragment extends Fragment {
                         Log.d(TAG, e.getMessage());
                     }
                 });
-
     }
 
     private void init(View v) {
@@ -188,10 +178,11 @@ public class LandingFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == REQUEST_NEW_ENTRY && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
-            Entry entry = data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
-            mVehicles.add(entry);
+            Vehicle vehicle = data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
+            //mTickets.add(vehicle);
             printArrayList();
             mAdapter.notifyDataSetChanged();
 
@@ -200,15 +191,19 @@ public class LandingFragment extends Fragment {
             mVehicles.add(entryName);
             printArrayList();
             mAdapter.notifyDataSetChanged();*/
-        }
-        else if(requestCode==REQUEST_FOR_STATUS && resultCode==Activity.RESULT_OK && data.hasExtra("status")){
+        } else if (requestCode == REQUEST_FOR_STATUS && resultCode == Activity.RESULT_OK && data.hasExtra("status")) {
 
-                mVehicleStatus=data.getStringExtra("status");
-                mAdapter.notifyDataSetChanged();
+            String newStatus = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
+            String documentId = data.getStringExtra(StatusShowFragment.EXTRA_DOCUMENT_ID);
+
+            FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
+                    .document(documentId)
+                    .update(Ticket.FIELD_CURRENT_STATUS, newStatus);
+
+            mAdapter.notifyDataSetChanged();
         }
 
     }
-
 
     private class DetailsAdapter extends RecyclerView.Adapter<DetailVH> {
 
@@ -228,12 +223,12 @@ public class LandingFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull DetailVH holder, int position) {
-            holder.bind((Entry) mVehicles.get(position));
+            holder.bind(mTickets.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return mVehicles.size();
+            return mTickets.size();
         }
     }
 
@@ -246,6 +241,8 @@ public class LandingFragment extends Fragment {
         private TextView mOwnerName, mMobileNumber, mDate;
         private Button mStatus;
 
+        private Ticket mBoundTicket;
+
         DetailVH(View itemView) {
             super(itemView);
             mIndexNumber = itemView.findViewById(R.id.entry_no);
@@ -256,24 +253,27 @@ public class LandingFragment extends Fragment {
             mOwnerName = itemView.findViewById(R.id.owner_name_view);
             mDate = itemView.findViewById(R.id.date_and_time);
             mDelete.setOnClickListener(this);
-            mStatus=itemView.findViewById(R.id.vehicle_status);
+            mStatus = itemView.findViewById(R.id.vehicle_status);
             mStatus.setOnClickListener(this);
 
         }
 
 
-        public void bind(Entry entry) {
-
+        public void bind(Ticket ticket) {
+            mBoundTicket = ticket;
 
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
-            mDetails.setText(entry.getmVehicleNumber());
-            mMobileNumber.setText(entry.getmMobileNumber());
-            Log.d(TAG, "bind: " + entry.getmOwnerName());
-            Log.d(TAG, "bind: " + entry.getmMobileNumber());
-            mOwnerName.setText(entry.getmOwnerName());
-            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
-            mDate.setText(simpleDateFormat.format(entry.getmDate()));
-            mStatus.setText(mVehicleStatus);
+
+            Vehicle vehicle = ticket.getVehicle();
+
+            mDetails.setText(vehicle.getmVehicleNumber());
+            mMobileNumber.setText(vehicle.getmMobileNumber());
+            Log.d(TAG, "bind: " + vehicle.getmOwnerName());
+            Log.d(TAG, "bind: " + vehicle.getmMobileNumber());
+            mOwnerName.setText(vehicle.getmOwnerName());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
+            mDate.setText(simpleDateFormat.format(ticket.getDate()));
+            mStatus.setText(ticket.getCurrentStatus());
 
         }
 
@@ -284,38 +284,35 @@ public class LandingFragment extends Fragment {
             switch (v.getId()) {
 
                 case R.id.entry_delete_button:
-                    mVehicles.remove(getAdapterPosition());
+                    mTickets.remove(getAdapterPosition());
                     //mAdapter.notifyItemRemoved(getAdapterPosition());
-                      mAdapter.notifyDataSetChanged();
-                      break;
-
-                case R.id.vehicle_status:
-                    mVehicleStatus=mStatus.getText().toString();
-                    FragmentManager fragmentManager=getFragmentManager();
-                    StatusShowFragment statusShowFragment=StatusShowFragment.newInstance(mVehicleStatus);
-                    statusShowFragment.setTargetFragment(LandingFragment.this,REQUEST_FOR_STATUS);
-                    statusShowFragment.show(fragmentManager,DIALOG_STATUS);
+                    mAdapter.notifyDataSetChanged();
                     break;
 
-
+                case R.id.vehicle_status:
+                    FragmentManager fragmentManager = getFragmentManager();
+                    StatusShowFragment statusShowFragment = StatusShowFragment.newInstance(
+                            mBoundTicket.getCurrentStatus(),
+                            mBoundTicket.getId()
+                    );
+                    statusShowFragment.setTargetFragment(LandingFragment.this, REQUEST_FOR_STATUS);
+                    statusShowFragment.show(fragmentManager, DIALOG_STATUS);
+                    break;
             }
         }
     }
 
     public void printArrayList() {
 
-        for (int i = 0; i < mVehicles.size(); i++) {
-            Log.d("temp", ": " + mVehicles.get(i));
+        for (int i = 0; i < mTickets.size(); i++) {
+            Log.d("temp", ": " + mTickets.get(i));
         }
 
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
+        //outState.putParcelableArrayList(STATE_TICKETS, mTickets);
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("myvehicles", mVehicles);
-
     }
-
-
 }

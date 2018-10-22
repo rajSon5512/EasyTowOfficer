@@ -25,27 +25,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.ServerTimestamp;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
-import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class EntryFragment extends Fragment implements View.OnClickListener {
 
@@ -60,7 +50,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     private Button mFetchInfo;
     private DocumentReference documentReference;
     private TextView mOwnerName,mOwnerMobileNumber,mVehicleType,mFine;
-    private Entry entry;
+    private Vehicle mVehicle;
     private  Boolean fetchingComplet =false;
 
     @Override
@@ -91,12 +81,12 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
                                 if(documentSnapshot.exists()){
 
-                                    entry=new Entry(documentSnapshot);
+                                    mVehicle =new Vehicle(documentSnapshot);
 
-                                    Log.d(TAG, "owner_name: "+entry.getmOwnerName());
-                                    mOwnerName.setText(entry.getmOwnerName());
-                                    mOwnerMobileNumber.setText(entry.getmMobileNumber());
-                                    mVehicleType.setText(String.valueOf(entry.getmVehicleType()));
+                                    Log.d(TAG, "owner_name: "+ mVehicle.getmOwnerName());
+                                    mOwnerName.setText(mVehicle.getmOwnerName());
+                                    mOwnerMobileNumber.setText(mVehicle.getmMobileNumber());
+                                    mVehicleType.setText(String.valueOf(mVehicle.getmVehicleType()));
 
                                     int vehicletype=Integer.parseInt(mVehicleType.getText().toString());
 
@@ -144,7 +134,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
     }
     public interface Callback {
-        void onDetailsEntered(Entry entry);
+        void onDetailsEntered(Vehicle vehicle);
     }
 
 
@@ -213,7 +203,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.entry_done_button:
                 Log.d(TAG, "onOptionsItemSelected: " + mVehicleNumber);
-                fireStoreAdd(entry);
+                fireStoreAdd(mVehicle);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -221,17 +211,17 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void fireStoreAdd(final Entry entry) {
+    private void fireStoreAdd(final Vehicle vehicle) {
 
         String uid=FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Map<String, Object> vehiclelist = new HashMap<>();
 
         vehiclelist.put("current_status", "unpaid");
-        vehiclelist.put("date",entry.getmDate());
-        vehiclelist.put("Fine",entry.getmFine());
+        vehiclelist.put("date", vehicle.getmDate());
+        vehiclelist.put("Fine", vehicle.getmFine());
         vehiclelist.put("raised_by",uid);
-        vehiclelist.put("vehicle_id",entry.getmVehicleNumber());
+        vehiclelist.put("vehicle_id", vehicle.getmVehicleNumber());
         vehiclelist.put("date", FieldValue.serverTimestamp());
       /*  FirebaseFirestore.getInstance()
                 .collection("")
@@ -257,7 +247,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Success");
-                        mCallback.onDetailsEntered(entry);
+                        mCallback.onDetailsEntered(vehicle);
                         documentReference.getId();
                     }
                 })

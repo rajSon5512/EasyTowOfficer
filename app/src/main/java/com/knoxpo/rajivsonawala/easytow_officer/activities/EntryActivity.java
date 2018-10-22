@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 
 import com.knoxpo.rajivsonawala.easytow_officer.fragments.EntryFragment;
-import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
 public class EntryActivity extends ToolbarActivity implements EntryFragment.Callback {
 
@@ -31,10 +31,10 @@ public class EntryActivity extends ToolbarActivity implements EntryFragment.Call
     }
 
     @Override
-    public void onDetailsEntered(Entry entry) {
+    public void onDetailsEntered(Vehicle vehicle) {
 
             Intent returnIntent=new Intent();
-            returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT,entry);
+            returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT, vehicle);
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
 

@@ -28,19 +28,23 @@ import static android.content.ContentValues.TAG;
 
 public class StatusShowFragment extends DialogFragment implements AdapterView.OnItemSelectedListener {
 
+    private static final String TAG = StatusShowFragment.class.getSimpleName();
+    private static final String ARGS_STATUS = TAG + ".ARGS_STATUS";
+    private static final String ARGS_DOCUMENT_ID = TAG + ".ARGS_DOCUMENT_ID";
+
+    public static final String EXTRA_DOCUMENT_ID = TAG + ".EXTRA_DOCUMENT_ID";
+
     private Spinner  mSpinner;
     private EditText mNoteInfo;
     private TextView mNoteView,mStatus;
-    private String item;
-    private static final int requestCode=1;
 
-    public static StatusShowFragment newInstance(String status) {
+    public static StatusShowFragment newInstance(String status, String editingDocumentId) {
 
 
         Log.d(TAG, "newInstance: "+status);
-
         Bundle args = new Bundle();
-        args.putString("status",status);
+        args.putString(ARGS_STATUS,status);
+        args.putString(ARGS_DOCUMENT_ID, editingDocumentId);
         StatusShowFragment fragment = new StatusShowFragment();
         fragment.setArguments(args);
         return fragment;
@@ -106,16 +110,17 @@ public class StatusShowFragment extends DialogFragment implements AdapterView.On
 
     private void sendResult() {
 
+        String selectedItem = (String) mSpinner.getSelectedItem();
+
         Intent intent=new Intent();
 
-        intent.putExtra("status",item);
-
-        getTargetFragment().onActivityResult(requestCode, Activity.RESULT_OK,intent);
+        intent.putExtra(EXTRA_DOCUMENT_ID, getArguments().getString(ARGS_DOCUMENT_ID));
+        intent.putExtra(Intent.EXTRA_RETURN_RESULT,selectedItem);
+        getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK,intent);
 
     }
 
     private void init(View view) {
-
            mSpinner=view.findViewById(R.id.status_spinner);
            mNoteInfo=view.findViewById(R.id.note_information);
            mStatus=view.findViewById(R.id.vehicle_status_view);
@@ -125,9 +130,6 @@ public class StatusShowFragment extends DialogFragment implements AdapterView.On
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-        item=adapterView.getItemAtPosition(i).toString();
-        Toast.makeText(getActivity(),"Selected :"+item,Toast.LENGTH_SHORT).show();
     }
 
     @Override

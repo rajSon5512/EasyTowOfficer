@@ -10,17 +10,20 @@ import java.util.Date;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class Entry implements Parcelable {
+public class Vehicle implements Parcelable {
+
+    public static final String COLLECTION_NAME = "vehicles";
 
     private String mId;
     private String mVehicleNumber;
     private String mOwnerName;
      private String mMobileNumber;
     private int mVehicleType;
+
     private int mFine;
     private Date mDate;
 
-    public Entry(DocumentSnapshot document){
+    public Vehicle(DocumentSnapshot document){
         mId = document.getId();
         mVehicleNumber=document.get("vehicle_number").toString();
         mOwnerName=document.get("owner_name").toString();
@@ -35,8 +38,8 @@ public class Entry implements Parcelable {
             }
 
 
-        Log.d(TAG, "Entry: "+mOwnerName);
-        Log.d(TAG, "Entry: "+mVehicleType);
+        Log.d(TAG, "Vehicle: "+mOwnerName);
+        Log.d(TAG, "Vehicle: "+mVehicleType);
 
 
 
@@ -55,7 +58,7 @@ public class Entry implements Parcelable {
 
     }
 
-    protected Entry(Parcel in) {
+    protected Vehicle(Parcel in) {
         mId = in.readString();
         mVehicleNumber = in.readString();
         mOwnerName = in.readString();
@@ -65,15 +68,15 @@ public class Entry implements Parcelable {
         mDate = new Date(in.readLong());
     }
 
-    public static final Creator<Entry> CREATOR = new Creator<Entry>() {
+    public static final Creator<Vehicle> CREATOR = new Creator<Vehicle>() {
         @Override
-        public Entry createFromParcel(Parcel in) {
-            return new Entry(in);
+        public Vehicle createFromParcel(Parcel in) {
+            return new Vehicle(in);
         }
 
         @Override
-        public Entry[] newArray(int size) {
-            return new Entry[size];
+        public Vehicle[] newArray(int size) {
+            return new Vehicle[size];
         }
     };
 

@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +21,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
-import com.knoxpo.rajivsonawala.easytow_officer.models.Entry;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
-import java.net.DatagramPacket;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -102,7 +99,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-            holder.bind((Entry)mVehicleHistoryList.get(position));
+            holder.bind((Vehicle)mVehicleHistoryList.get(position));
         }
 
         @Override
@@ -131,14 +128,14 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mDate = itemView.findViewById(R.id.date_and_time);
         }
 
-        public void bind(Entry entry){
+        public void bind(Vehicle vehicle){
 
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
-            mDetails.setText(entry.getmVehicleNumber());
-            mMobileNumber.setText(entry.getmMobileNumber());
-            mOwnerName.setText(entry.getmOwnerName());
+            mDetails.setText(vehicle.getmVehicleNumber());
+            mMobileNumber.setText(vehicle.getmMobileNumber());
+            mOwnerName.setText(vehicle.getmOwnerName());
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
-            mDate.setText(simpleDateFormat.format(entry.getmDate()));
+            mDate.setText(simpleDateFormat.format(vehicle.getmDate()));
 
         }
 
@@ -237,9 +234,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshotForVehicle) {
 
-                                                Entry entry=new Entry(documentSnapshotForVehicle);
-                                                entry.setDate(documentDate);
-                                                mVehicleHistoryList.add(entry);
+                                                Vehicle vehicle =new Vehicle(documentSnapshotForVehicle);
+                                                vehicle.setDate(documentDate);
+                                                mVehicleHistoryList.add(vehicle);
                                                 mRecyclerView.getAdapter().notifyDataSetChanged();
 
                                             }
