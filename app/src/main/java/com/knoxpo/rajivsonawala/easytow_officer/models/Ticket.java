@@ -13,7 +13,7 @@ public class Ticket {
     /**
      * Field names
      */
-    public static final String FIELD_FINE = "fine";
+    public static final String FIELD_FINE = "Fine";
     public static final String FIELD_CURRENT_STATUS = "current_status";
     public static final String FIELD_DATE = "date";
     public static final String FIELD_RAISED_BY = "raised_by";

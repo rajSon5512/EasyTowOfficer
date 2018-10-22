@@ -59,7 +59,7 @@ public class StatusShowFragment extends DialogFragment implements AdapterView.On
 
         init(view);
 
-        String showStatus=getArguments().getString("status");
+        String showStatus=getArguments().getString(ARGS_STATUS);
 
         List<String> mStatusList=new ArrayList<String>();
         mStatusList.add("pending");
@@ -111,7 +111,6 @@ public class StatusShowFragment extends DialogFragment implements AdapterView.On
     private void sendResult() {
 
         String selectedItem = (String) mSpinner.getSelectedItem();
-
         Intent intent=new Intent();
 
         intent.putExtra(EXTRA_DOCUMENT_ID, getArguments().getString(ARGS_DOCUMENT_ID));
