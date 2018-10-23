@@ -1,6 +1,7 @@
 package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
 import java.text.DateFormat;
@@ -135,7 +137,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mMobileNumber.setText(vehicle.getmMobileNumber());
             mOwnerName.setText(vehicle.getmOwnerName());
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
-            mDate.setText(simpleDateFormat.format(vehicle.getmDate()));
+           // mDate.setText(simpleDateFormat.format());
 
         }
 
@@ -211,9 +213,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
                     Toast.makeText(getContext(),"TRUE",Toast.LENGTH_SHORT).show();
 
-                    FirebaseFirestore.getInstance().collection("tickets")
-                            .whereGreaterThanOrEqualTo("date",startDate)
-                            .whereLessThanOrEqualTo("date",endDate)
+                    FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
+                            .whereGreaterThanOrEqualTo(Ticket.FIELD_DATE,startDate)
+                            .whereLessThanOrEqualTo(Ticket.FIELD_DATE,endDate)
                             .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -223,31 +225,25 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
                             for(int i=0;i<documentSnapshots.size();i++){
 
-                                String vehiclenumber=documentSnapshots.get(i).get("vehicle_id").toString();
-                                final Date documentDate= (Date) documentSnapshots.get(i).get("date");
+                                String vehiclenumber=documentSnapshots.get(i).get(Ticket.FIELD_VEHICLE_ID).toString();
+                                final Date documentDate=(Date)documentSnapshots.get(i).get("date");
 
                                 Log.d(TAG, "documentDate: "+documentDate);
 
-                                FirebaseFirestore.getInstance().collection("vehicles")
+                                FirebaseFirestore.getInstance().collection(Vehicle.COLLECTION_NAME)
                                         .document(vehiclenumber).get()
                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshotForVehicle) {
 
                                                 Vehicle vehicle =new Vehicle(documentSnapshotForVehicle);
-                                                vehicle.setDate(documentDate);
+                                          //      vehicle.setDate(documentDate);
                                                 mVehicleHistoryList.add(vehicle);
                                                 mRecyclerView.getAdapter().notifyDataSetChanged();
 
                                             }
                                         });
-
-
-
-
-                            }
-
-
+                                 }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -274,7 +270,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Calendar calendar=(Calendar)data.getSerializableExtra("selected_date");
+        Calendar calendar=(Calendar)data.getSerializableExtra(DatePickerFragment.DATE);
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
         Date date1=calendar.getTime();
 

@@ -17,45 +17,17 @@ public class Vehicle implements Parcelable {
     private String mId;
     private String mVehicleNumber;
     private String mOwnerName;
-     private String mMobileNumber;
+    private String mMobileNumber;
     private int mVehicleType;
 
-    private int mFine;
-    private Date mDate;
-
-    public Vehicle(DocumentSnapshot document){
+    public Vehicle(DocumentSnapshot document) {
         mId = document.getId();
-        mVehicleNumber=document.get("vehicle_number").toString();
-        mOwnerName=document.get("owner_name").toString();
-        mMobileNumber=document.get("owner_number").toString();
-        mVehicleType=Integer.parseInt(document.get("vehicle_type").toString());
-        mDate=(Date)document.get("date");
-
-        if(mDate==null){
-
-                mDate=new Date();
-
-            }
-
-
-        Log.d(TAG, "Vehicle: "+mOwnerName);
-        Log.d(TAG, "Vehicle: "+mVehicleType);
-
-
-
-        if(mVehicleType==2){
-
-            mFine=100;
-
-        }else if(mVehicleType==3){
-
-            mFine=150;
-
-        }else if(mVehicleType==4){
-
-            mFine=200;
-        }
-
+        mVehicleNumber = document.get("vehicle_number").toString();
+        mOwnerName = document.get("owner_name").toString();
+        mMobileNumber = document.get("owner_number").toString();
+        mVehicleType = Integer.parseInt(document.get("vehicle_type").toString());
+        Log.d(TAG, "Vehicle: " + mOwnerName);
+        Log.d(TAG, "Vehicle: " + mVehicleType);
     }
 
     protected Vehicle(Parcel in) {
@@ -64,8 +36,6 @@ public class Vehicle implements Parcelable {
         mOwnerName = in.readString();
         mMobileNumber = in.readString();
         mVehicleType = in.readInt();
-        mFine = in.readInt();
-        mDate = new Date(in.readLong());
     }
 
     public static final Creator<Vehicle> CREATOR = new Creator<Vehicle>() {
@@ -100,24 +70,6 @@ public class Vehicle implements Parcelable {
         return mVehicleType;
     }
 
-    public int getmFine(){
-
-        return mFine;
-    }
-
-    public Date getmDate(){
-
-        return mDate;
-    }
-
-    public void setDate(Date date){
-
-        mDate=date;
-        Log.d(TAG, "setDate: "+mDate);
-
-
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -131,10 +83,5 @@ public class Vehicle implements Parcelable {
         parcel.writeString(this.mOwnerName);
         parcel.writeString(this.mMobileNumber);
         parcel.writeInt(this.mVehicleType);
-        parcel.writeInt(this.mFine);
-        parcel.writeLong(mDate.getTime());
     }
-
-
-
 }

@@ -20,8 +20,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -91,7 +93,7 @@ public class LandingFragment extends Fragment {
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
-        collectionReference = firebaseFirestore.collection("tickets");
+        collectionReference = firebaseFirestore.collection(Ticket.COLLECTION_NAME);
 
     }
 
@@ -143,6 +145,7 @@ public class LandingFragment extends Fragment {
 
                             final Ticket ticket = new Ticket(documents.get(i));
 
+
                             FirebaseFirestore.getInstance()
                                     .collection(Vehicle.COLLECTION_NAME)
                                     .document(ticket.getVehicleId())
@@ -152,10 +155,15 @@ public class LandingFragment extends Fragment {
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                                             Vehicle vehicle = new Vehicle(documentSnapshot);
                                             ticket.setVehicle(vehicle);
+                                            mRecyclerView.getAdapter().notifyDataSetChanged();
+
                                         }
                                     });
                             mTickets.add(ticket);
+
                         }
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -165,6 +173,8 @@ public class LandingFragment extends Fragment {
                         Log.d(TAG, e.getMessage());
                     }
                 });
+
+
     }
 
     private void init(View v) {
@@ -181,26 +191,68 @@ public class LandingFragment extends Fragment {
 
         if (requestCode == REQUEST_NEW_ENTRY && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
-            Vehicle vehicle = data.getParcelableExtra(Intent.EXTRA_RETURN_RESULT);
-            //mTickets.add(vehicle);
+           String ticketId = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
+         //   mTickets.add(vehicle);
+
+            Log.d(TAG, "onActivityResult: "+ticketId);
+
+            FirebaseFirestore.getInstance()
+                    .collection(Ticket.COLLECTION_NAME)
+                    .document(ticketId)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            final Ticket ticket = new Ticket(documentSnapshot);
+
+                            FirebaseFirestore.getInstance()
+                                    .collection(Vehicle.COLLECTION_NAME)
+                                    .document(ticket.getVehicleId())
+                                    .get()
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            Vehicle vehicle = new Vehicle(documentSnapshot);
+                                            ticket.setVehicle(vehicle);
+                                            mTickets.add(0, ticket);
+                                            //mAdapter.notifyDataSetChanged();
+                                            mAdapter.notifyItemInserted(0);
+                                        }
+                                    });
+                        }
+                    });
+
             printArrayList();
-            mAdapter.notifyDataSetChanged();
 
             /*String entryName = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
             Toast.makeText(getContext(), "vehicle Number:" + data.getStringExtra(Intent.EXTRA_RETURN_RESULT), Toast.LENGTH_LONG).show();
             mVehicles.add(entryName);
             printArrayList();
             mAdapter.notifyDataSetChanged();*/
-        } else if (requestCode == REQUEST_FOR_STATUS && resultCode == Activity.RESULT_OK && data.hasExtra("status")) {
+        } else if (requestCode == REQUEST_FOR_STATUS && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
             String newStatus = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
             String documentId = data.getStringExtra(StatusShowFragment.EXTRA_DOCUMENT_ID);
+
+            Log.d(TAG, "onActivityResult: "+newStatus);
+
+            int indexToChange = -1;
+            for(int i=0;i<mTickets.size();i++){
+                if(mTickets.get(i).getId().equals(documentId)){
+                    //Ticket found to update status on
+                    mTickets.get(i).setCurrentStatus(newStatus);
+                    indexToChange = i;
+                    break;
+                }
+            }
 
             FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
                     .document(documentId)
                     .update(Ticket.FIELD_CURRENT_STATUS, newStatus);
 
-            mAdapter.notifyDataSetChanged();
+            if(indexToChange >= 0){
+                mAdapter.notifyItemChanged(indexToChange);
+            }
         }
 
     }
@@ -240,7 +292,6 @@ public class LandingFragment extends Fragment {
         private ImageButton mRight;
         private TextView mOwnerName, mMobileNumber, mDate;
         private Button mStatus;
-
         private Ticket mBoundTicket;
 
         DetailVH(View itemView) {
@@ -284,9 +335,13 @@ public class LandingFragment extends Fragment {
             switch (v.getId()) {
 
                 case R.id.entry_delete_button:
-                    mTickets.remove(getAdapterPosition());
-                    //mAdapter.notifyItemRemoved(getAdapterPosition());
-                    mAdapter.notifyDataSetChanged();
+
+                    if(mTickets.remove(getAdapterPosition())!=null){
+
+                        mAdapter.notifyItemRemoved(getAdapterPosition());
+                        collectionReference.document(mBoundTicket.getId()).delete();
+                      }
+
                     break;
 
                 case R.id.vehicle_status:

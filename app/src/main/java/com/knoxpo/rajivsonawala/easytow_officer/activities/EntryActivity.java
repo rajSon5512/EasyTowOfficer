@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.knoxpo.rajivsonawala.easytow_officer.fragments.EntryFragment;
@@ -31,10 +32,11 @@ public class EntryActivity extends ToolbarActivity implements EntryFragment.Call
     }
 
     @Override
-    public void onDetailsEntered(Vehicle vehicle) {
+    public void onDetailsEntered(String ticketId) {
 
+        Log.d(TAG, "onDetailsEntered: "+ticketId);
             Intent returnIntent=new Intent();
-            returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT, vehicle);
+            returnIntent.putExtra(Intent.EXTRA_RETURN_RESULT, ticketId);
             setResult(Activity.RESULT_OK,returnIntent);
             finish();
 

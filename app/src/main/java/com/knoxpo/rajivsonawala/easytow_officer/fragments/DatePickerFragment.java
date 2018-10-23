@@ -22,7 +22,7 @@ import static com.google.android.gms.flags.FlagSource.G;
 
 public class DatePickerFragment extends DialogFragment {
 
-    private static final String DATE = "selected_date";
+    public static final String DATE = "selected_date";
     private DatePicker mDatePicker;
 
     public static DatePickerFragment newInstance() {

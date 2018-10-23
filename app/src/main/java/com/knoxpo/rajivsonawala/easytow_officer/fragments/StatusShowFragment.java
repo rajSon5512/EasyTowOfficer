@@ -111,6 +111,9 @@ public class StatusShowFragment extends DialogFragment implements AdapterView.On
     private void sendResult() {
 
         String selectedItem = (String) mSpinner.getSelectedItem();
+
+        Log.d(TAG, "sendResult: "+selectedItem);
+
         Intent intent=new Intent();
 
         intent.putExtra(EXTRA_DOCUMENT_ID, getArguments().getString(ARGS_DOCUMENT_ID));
