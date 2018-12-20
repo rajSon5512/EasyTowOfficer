@@ -33,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Fine;
+import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
@@ -96,13 +97,39 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
                             if(task.isSuccessful()){
 
-                                DocumentSnapshot documentSnapshot=task.getResult();
+                                final DocumentSnapshot documentSnapshot=task.getResult();
 
                                 if(documentSnapshot.exists()){
 
                                     mVehicle =new Vehicle(documentSnapshot);
 
                                     Log.d(TAG, "owner_name: "+ mVehicle.getmOwnerName());
+                                    Log.d(TAG, "onComplete: "+mVehicle.getUUID());
+
+                                    db.collection(NormalUser.COLLECTION_NAME).document(mVehicle.getUUID())
+                                            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                                                DocumentSnapshot documentSnapshot1=task.getResult();
+
+                                                if(documentSnapshot1.exists()){
+
+                                                    NormalUser normalUser=new NormalUser(documentSnapshot1);
+
+                                                    Log.d(TAG, "newData: "+normalUser.getmOwnerName());
+
+                                                }
+
+
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+
 
                                     db.collection(Fine.COLLECTION_NAME).document(
                                             String.valueOf(mVehicle.getmVehicleType())

@@ -6,58 +6,66 @@ import android.util.Log;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.Date;
-import java.util.UUID;
-
 import static android.support.constraint.Constraints.TAG;
 
-public class Vehicle implements Parcelable {
+public class NormalUser implements Parcelable {
 
-    public static final String COLLECTION_NAME = "vehicles";
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeString(this.mId);
+        parcel.writeString(this.mVehicleNumber);
+        parcel.writeString(this.mOwnerName);
+        parcel.writeString(this.mMobileNumber);
+        parcel.writeInt(this.mVehicleType);
+
+    }
+
+
+    public static final String COLLECTION_NAME = "normalUser";
 
     private String mId;
-    private String  mUUID;
     private String mVehicleNumber;
     private String mOwnerName;
     private String mMobileNumber;
     private int mVehicleType;
 
-    public Vehicle(DocumentSnapshot document) {
+    public NormalUser(DocumentSnapshot document) {
         mId = document.getId();
 
-        mUUID=document.get("owner_id").toString();
         mVehicleNumber = document.get("vehicle_number").toString();
         mOwnerName = document.get("owner_name").toString();
-        mMobileNumber = document.get("owner_number").toString();
+        mMobileNumber = document.get("mobile").toString();
         mVehicleType = Integer.parseInt(document.get("vehicle_type").toString());
         Log.d(TAG, "Vehicle: " + mOwnerName);
         Log.d(TAG, "Vehicle: " + mVehicleType);
     }
 
-    public String getUUID() {
-        return mUUID;
-    }
 
-    protected Vehicle(Parcel in) {
+    protected NormalUser(Parcel in) {
         mId = in.readString();
         mVehicleNumber = in.readString();
         mOwnerName = in.readString();
         mMobileNumber = in.readString();
         mVehicleType = in.readInt();
-        mUUID=in.readString();
     }
 
 
 
-    public static final Creator<Vehicle> CREATOR = new Creator<Vehicle>() {
+    public static final Creator<NormalUser> CREATOR = new Creator<NormalUser>() {
         @Override
-        public Vehicle createFromParcel(Parcel in) {
-            return new Vehicle(in);
+        public NormalUser createFromParcel(Parcel in) {
+            return new NormalUser(in);
         }
 
         @Override
-        public Vehicle[] newArray(int size) {
-            return new Vehicle[size];
+        public NormalUser[] newArray(int size) {
+            return new NormalUser[size];
         }
     };
 
@@ -79,22 +87,6 @@ public class Vehicle implements Parcelable {
 
     public int getmVehicleType() {
         return mVehicleType;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-
-        parcel.writeString(this.mId);
-        parcel.writeString(this.mVehicleNumber);
-        parcel.writeString(this.mOwnerName);
-        parcel.writeString(this.mMobileNumber);
-        parcel.writeInt(this.mVehicleType);
-        parcel.writeString(this.mUUID);
     }
 
 }
