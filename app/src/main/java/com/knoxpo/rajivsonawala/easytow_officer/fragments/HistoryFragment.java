@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
+import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
@@ -101,7 +102,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-            holder.bind((Vehicle)mVehicleHistoryList.get(position));
+            holder.bind((NormalUser)mVehicleHistoryList.get(position));
         }
 
         @Override
@@ -130,7 +131,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mDate = itemView.findViewById(R.id.date_and_time);
         }
 
-        public void bind(Vehicle vehicle){
+        public void bind(NormalUser vehicle){
 
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
             mDetails.setText(vehicle.getmVehicleNumber());
@@ -230,13 +231,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
                                 Log.d(TAG, "documentDate: "+documentDate);
 
-                                FirebaseFirestore.getInstance().collection(Vehicle.COLLECTION_NAME)
+                                FirebaseFirestore.getInstance().collection(NormalUser.COLLECTION_NAME)
                                         .document(vehiclenumber).get()
                                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshotForVehicle) {
 
-                                                Vehicle vehicle =new Vehicle(documentSnapshotForVehicle);
+                                                NormalUser vehicle =new NormalUser(documentSnapshotForVehicle);
                                           //      vehicle.setDate(documentDate);
                                                 mVehicleHistoryList.add(vehicle);
                                                 mRecyclerView.getAdapter().notifyDataSetChanged();

@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 
@@ -147,13 +148,14 @@ public class LandingFragment extends Fragment {
 
 
                             FirebaseFirestore.getInstance()
-                                    .collection(Vehicle.COLLECTION_NAME)
-                                    .document(ticket.getVehicleId())
+                                    .collection(NormalUser.COLLECTION_NAME)
+                                    .document("VDDDblxBRkRpC0swcLkEZHmJUvP2")
                                     .get()
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            Vehicle vehicle = new Vehicle(documentSnapshot);
+
+                                            NormalUser vehicle = new NormalUser(documentSnapshot);
                                             ticket.setVehicle(vehicle);
                                             mRecyclerView.getAdapter().notifyDataSetChanged();
 
@@ -192,6 +194,7 @@ public class LandingFragment extends Fragment {
         if (requestCode == REQUEST_NEW_ENTRY && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
            String ticketId = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
+           Log.d("ticketId",ticketId);
          //   mTickets.add(vehicle);
 
             Log.d(TAG, "onActivityResult: "+ticketId);
@@ -206,13 +209,13 @@ public class LandingFragment extends Fragment {
                             final Ticket ticket = new Ticket(documentSnapshot);
 
                             FirebaseFirestore.getInstance()
-                                    .collection(Vehicle.COLLECTION_NAME)
+                                    .collection(NormalUser.COLLECTION_NAME)
                                     .document(ticket.getVehicleId())
                                     .get()
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            Vehicle vehicle = new Vehicle(documentSnapshot);
+                                            NormalUser vehicle = new NormalUser(documentSnapshot);
                                             ticket.setVehicle(vehicle);
                                             mTickets.add(0, ticket);
                                             //mAdapter.notifyDataSetChanged();
@@ -315,7 +318,7 @@ public class LandingFragment extends Fragment {
 
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
 
-            Vehicle vehicle = ticket.getVehicle();
+            NormalUser vehicle = ticket.getVehicle();
 
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());

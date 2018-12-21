@@ -38,10 +38,11 @@ public class NormalUser implements Parcelable {
     public NormalUser(DocumentSnapshot document) {
         mId = document.getId();
 
-        mVehicleNumber = document.get("vehicle_number").toString();
-        mOwnerName = document.get("owner_name").toString();
+        mVehicleNumber = document.getString("vehicle_number");
+        mOwnerName = document.getString("owner_name");
         mMobileNumber = document.get("mobile").toString();
-        mVehicleType = Integer.parseInt(document.get("vehicle_type").toString());
+        mVehicleType = 2;
+        //mVehicleType = Integer.parseInt(document.get("vehicle_type").toString());
         Log.d(TAG, "Vehicle: " + mOwnerName);
         Log.d(TAG, "Vehicle: " + mVehicleType);
     }

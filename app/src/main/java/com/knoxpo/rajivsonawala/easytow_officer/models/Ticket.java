@@ -29,7 +29,7 @@ public class Ticket {
     private String mVehicleId;
     private double mFine;
 
-    private Vehicle mVehicle;
+    private NormalUser mVehicle;
 
 
     /**
@@ -89,11 +89,11 @@ public class Ticket {
         mFine = fine;
     }
 
-    public Vehicle getVehicle() {
+    public NormalUser getVehicle() {
         return mVehicle;
     }
 
-    public void setVehicle(Vehicle vehicle) {
+    public void setVehicle(NormalUser vehicle) {
         mVehicle = vehicle;
     }
 
