@@ -31,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
+import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 
@@ -54,7 +55,7 @@ public class LandingFragment extends Fragment {
 
     private static final String DIALOG_STATUS = "status";
 
-    private ArrayList<Ticket> mTickets = new ArrayList();
+    private ArrayList<Ticket> mTickets = new ArrayList<Ticket>();
     private RecyclerView mRecyclerView;
     private DetailsAdapter mAdapter;
     private CollectionReference collectionReference;
@@ -137,7 +138,7 @@ public class LandingFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                        final List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
 
                         Log.d(TAG, "onSuccess: " + documents.size());
 
@@ -153,9 +154,33 @@ public class LandingFragment extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            Vehicle vehicle = new Vehicle(documentSnapshot);
+                                            /*Vehicle vehicle = new Vehicle(documentSnapshot);
                                             ticket.setVehicle(vehicle);
-                                            mRecyclerView.getAdapter().notifyDataSetChanged();
+                                            */
+
+                                            String id=documentSnapshot.getString("owner_id");
+
+                                            FirebaseFirestore.getInstance()
+                                                    .collection(NormalUser.COLLECTION_NAME)
+                                                    .document(id)
+                                                    .get()
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+
+                                                            NormalUser normalUser=new NormalUser(documentSnapshot);
+                                                            ticket.setVehicle(normalUser);
+                                                            mRecyclerView.getAdapter().notifyDataSetChanged();
+
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                    Log.d(TAG, "onFailure: Failed");
+                                                }
+                                            });
 
                                         }
                                     });
@@ -212,11 +237,33 @@ public class LandingFragment extends Fragment {
                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                            Vehicle vehicle = new Vehicle(documentSnapshot);
-                                            ticket.setVehicle(vehicle);
-                                            mTickets.add(0, ticket);
-                                            //mAdapter.notifyDataSetChanged();
-                                            mAdapter.notifyItemInserted(0);
+                                      /*      Vehicle vehicle = new Vehicle(documentSnapshot);
+                                      */
+
+                                            String id=documentSnapshot.getString("owner_id");
+
+                                            FirebaseFirestore.getInstance().collection
+                                                    (NormalUser.COLLECTION_NAME)
+                                                    .document(id)
+                                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                                    NormalUser vehicle=new NormalUser(documentSnapshot);
+                                                    ticket.setVehicle(vehicle);
+                                                    mTickets.add(0, ticket);
+                                                    //mAdapter.notifyDataSetChanged();
+                                                    mAdapter.notifyItemInserted(0);
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                    Log.d(TAG, "onFailure: "+e.getMessage());
+                                                }
+                                            });
+
                                         }
                                     });
                         }
@@ -313,10 +360,9 @@ public class LandingFragment extends Fragment {
         public void bind(Ticket ticket) {
             mBoundTicket = ticket;
 
-            mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
+            mIndexNumber.setText(String.valueOf(getAdapterPosition()+1));
 
-            Vehicle vehicle = ticket.getVehicle();
-
+            NormalUser vehicle = ticket.getVehicle();
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());
             Log.d(TAG, "bind: " + vehicle.getmOwnerName());

@@ -96,5 +96,4 @@ public class Vehicle implements Parcelable {
         parcel.writeInt(this.mVehicleType);
         parcel.writeString(this.mUUID);
     }
-
 }

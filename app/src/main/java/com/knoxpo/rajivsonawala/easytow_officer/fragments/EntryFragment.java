@@ -125,8 +125,8 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                                                     Log.d(TAG, "newData: "+mNormalUser.getmMobileNumber());
                                                     Log.d(TAG, "newData: "+mNormalUser.getmVehicleNumber());
 
-                                                    db.collection(Fine.COLLECTION_NAME).document(
-                                                            String.valueOf(mNormalUser.getmVehicleType())
+                                                    db.collection(Fine.COLLECTION_NAME).document
+                                                            (String.valueOf(mNormalUser.getmVehicleType())
                                                     )
                                                             .get()
                                                             .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -136,7 +136,6 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                                                                     mOwnerNameTV.setText(mNormalUser.getmOwnerName());
                                                                     mOwnerMobileNumberTV.setText(mNormalUser.getmMobileNumber());
                                                                     mVehicleTypeTV.setText(String.valueOf(mNormalUser.getmVehicleType()));
-
                                                                     mFineTV.setText(mFine.getFine()+"");
                                                                 }
                                                             });

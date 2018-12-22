@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
+import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
@@ -51,6 +52,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private Adapter mAdapter;
     private ArrayList mVehicleHistoryList=new ArrayList();
     private Date mDateForEntry = null;
+    private ArrayList<Date>  dateSequence=new ArrayList<Date>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
         @Override
         public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-            holder.bind((Vehicle)mVehicleHistoryList.get(position));
+            holder.bind((NormalUser) mVehicleHistoryList.get(position));
         }
 
         @Override
@@ -130,14 +132,16 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mDate = itemView.findViewById(R.id.date_and_time);
         }
 
-        public void bind(Vehicle vehicle){
+        public void bind(NormalUser vehicle){
 
             mIndexNumber.setText(String.valueOf(getAdapterPosition() + 1));
+
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());
             mOwnerName.setText(vehicle.getmOwnerName());
+
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
-           // mDate.setText(simpleDateFormat.format());
+             mDate.setText(simpleDateFormat.format(dateSequence.get(getAdapterPosition())));
 
         }
 
@@ -159,7 +163,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
 
                 Toast.makeText(getContext(),"Click",Toast.LENGTH_SHORT).show();
                 fragmentManager=getFragmentManager();
-                 datePickerFragment=DatePickerFragment.newInstance();
+                datePickerFragment=DatePickerFragment.newInstance();
                 datePickerFragment.setTargetFragment(this,REQUEST_START_DATE);
                 datePickerFragment.show(fragmentManager,DIALOG_DATE);
                 break;
@@ -229,6 +233,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                                 final Date documentDate=(Date)documentSnapshots.get(i).get("date");
 
                                 Log.d(TAG, "documentDate: "+documentDate);
+                                dateSequence.add(documentDate);
 
                                 FirebaseFirestore.getInstance().collection(Vehicle.COLLECTION_NAME)
                                         .document(vehiclenumber).get()
@@ -236,10 +241,28 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                                             @Override
                                             public void onSuccess(DocumentSnapshot documentSnapshotForVehicle) {
 
-                                                Vehicle vehicle =new Vehicle(documentSnapshotForVehicle);
-                                          //      vehicle.setDate(documentDate);
-                                                mVehicleHistoryList.add(vehicle);
-                                                mRecyclerView.getAdapter().notifyDataSetChanged();
+                                                String id=documentSnapshotForVehicle.getString("owner_id");
+
+                                                FirebaseFirestore.getInstance()
+                                                        .collection(NormalUser.COLLECTION_NAME)
+                                                        .document(id)
+                                                        .get()
+                                                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                            @Override
+                                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                                                NormalUser vehicle=new NormalUser(documentSnapshot);
+                                                                //      vehicle.setDate(documentDate);
+                                                                mVehicleHistoryList.add(vehicle);
+                                                                mRecyclerView.getAdapter().notifyDataSetChanged();
+                                                            }
+                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+
+                                                        Log.d(TAG, "onFailure: "+e.getMessage());
+                                                    }
+                                                });
 
                                             }
                                         });
