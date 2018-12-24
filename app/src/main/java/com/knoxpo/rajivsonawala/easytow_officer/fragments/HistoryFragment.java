@@ -197,9 +197,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                      Calendar calendar=Calendar.getInstance();
                      calendar.setTime(endDate);
 
-                     calendar.set(Calendar.HOUR,12);
-                     calendar.set(Calendar.MINUTE,59);
-                     calendar.set(Calendar.SECOND,59);
+                     calendar.set(Calendar.HOUR,24);
+                     calendar.set(Calendar.MINUTE,00);
+                     calendar.set(Calendar.SECOND,00);
 
                      endDate=calendar.getTime();
 
@@ -210,8 +210,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                 }
 
 
-                if((startDate.before(endDate) || startDate.equals(endDate)) && (endDate.before(new Date()) || endDate.equals(new Date()))){
-
+                if((startDate.before(endDate) || (startDate.equals(endDate)) && (endDate.before(new Date())) || endDate.equals(new Date()))){
 
                     Log.d(TAG, "Start Date: "+startDate+"End date:"+endDate);
 
@@ -283,6 +282,8 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                         Toast.makeText(getContext(),"Invalid Date Selected.",Toast.LENGTH_SHORT).show();
 
                     }
+
+                Log.d(TAG, "cases : 1"+startDate.before(endDate)+" 2" +startDate.equals(endDate)+" 3"+endDate.before(new Date())+" 4"+endDate.equals(new Date()));
 
                 break;
 
