@@ -42,5 +42,9 @@
     <string name="data_picker">Data Picker</string>
     <string name="note">Note</string>
     <string name="pending">pending</string>
+    <string name="profile_name">OfficerName</string>
+    <string name="mobile_number">OfficerInfomation</string>
+    <string name="save">Save</string>
+    <string name="norecordfound">EMPTY</string>
 
 </resources>

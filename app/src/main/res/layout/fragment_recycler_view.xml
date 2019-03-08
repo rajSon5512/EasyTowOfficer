@@ -2,32 +2,20 @@
 
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/holo_green_light"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <include layout="@layout/profile_pic"></include>
-
-
-</LinearLayout>
-
-<LinearLayout
-    android:orientation="horizontal"
-    android:layout_marginTop="100dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <include
+        android:id="@+id/profile_pic"
+        layout="@layout/profile_pic"></include>
 
 <android.support.v7.widget.RecyclerView
     android:padding="20dp"
     android:id="@+id/nav_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_below="@id/profile_pic"
     xmlns:android="http://schemas.android.com/apk/res/android" />
-
-</LinearLayout>
 
 </RelativeLayout>

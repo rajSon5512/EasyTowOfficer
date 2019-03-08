@@ -165,7 +165,7 @@ public class LandingFragment extends Fragment {
                                                     .document(id)
                                                     .get()
                                                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                        @Override
+                                                     @Override
                                                         public void onSuccess(DocumentSnapshot documentSnapshot) {
 
 
@@ -186,6 +186,8 @@ public class LandingFragment extends Fragment {
                                     });
                             mTickets.add(ticket);
 
+
+
                         }
 
 
@@ -205,7 +207,6 @@ public class LandingFragment extends Fragment {
     private void init(View v) {
         mRecyclerView = v.findViewById(R.id.rv_entry);
         mAdapter = new DetailsAdapter();
-
     }
 
 
@@ -224,7 +225,7 @@ public class LandingFragment extends Fragment {
             FirebaseFirestore.getInstance()
                     .collection(Ticket.COLLECTION_NAME)
                     .document(ticketId)
-                    .get()
+                  .get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {

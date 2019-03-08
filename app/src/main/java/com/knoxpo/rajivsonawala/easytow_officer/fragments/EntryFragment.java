@@ -104,9 +104,9 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
                                     mVehicle =new Vehicle(documentSnapshot);
 
-                                    Log.d(TAG, "owner_name: "+ mVehicle.getmOwnerName());
+                                    /*Log.d(TAG, "owner_name: "+ mVehicle.getmOwnerName());
                                     Log.d(TAG, "onComplete: "+mVehicle.getUUID());
-
+*/
 
                                     db.collection(NormalUser.COLLECTION_NAME).document(mVehicle.getUUID())
                                             .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
