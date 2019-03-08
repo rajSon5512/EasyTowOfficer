@@ -25,12 +25,14 @@ public class Vehicle implements Parcelable {
     public Vehicle(DocumentSnapshot document) {
         mId = document.getId();
 
+
         mUUID=document.get("owner_id").toString();
-        mVehicleNumber = document.get("vehicle_number").toString();
+/*        mVehicleNumber = document.get("vehicle_number").toString();
         mOwnerName = document.get("owner_name").toString();
         mMobileNumber = document.get("owner_number").toString();
         mVehicleType = Integer.parseInt(document.get("vehicle_type").toString());
         Log.d(TAG, "Vehicle: " + mOwnerName);
+*/
         Log.d(TAG, "Vehicle: " + mVehicleType);
     }
 
