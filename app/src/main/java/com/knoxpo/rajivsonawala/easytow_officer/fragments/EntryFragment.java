@@ -35,8 +35,10 @@ import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Fine;
 import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Transactions;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -86,7 +88,6 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.fetch_info_button:
-
 
                 String vehicleNumber = mVehicleDetailsET.getText().toString();
 
@@ -290,6 +291,41 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                         e.printStackTrace();
                     }
                 });
+
+
+        fireTickets(uid,mFine.getFine());
+
+    }
+
+    private void fireTickets(String uid, double fine) {
+
+        Map<String,String> transaction=new HashMap<String,String>();
+
+        Date date1=new Date();
+        transaction.put(Transactions.DATE,date1.toString());
+        transaction.put(Transactions.STATUS,"Pending");
+        transaction.put(Transactions.TAXAMOUNT,""+fine);
+        transaction.put(Transactions.UID,uid);
+
+        FirebaseFirestore.getInstance().collection(Transactions.COLLECTION_NANE)
+                .add(transaction).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                if(task.isSuccessful()){
+
+                    Log.d("fireTickets", "Transaction transfer ");
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("fireTickets", "onFailure: "+e.getMessage());
+            }
+        });
+
     }
 
 
