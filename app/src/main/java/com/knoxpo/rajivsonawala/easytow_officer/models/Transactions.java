@@ -6,20 +6,20 @@ public class Transactions {
         public final static  String DATE="date";
         public final static  String STATUS="status";
         public final static  String TAXAMOUNT="taxamount";
-        public final static  String UID="uid";
+        public final static  String VNUMBER="vehiclenumber";
 
         private String orderId;
         private String date;
         private String status;
         private String taxAmount;
-        private String uid;
+        private String vehiclenumber;
 
-        public Transactions(String orderId, String date, String status, String taxAmount, String uid) {
+        public Transactions(String orderId, String date, String status, String taxAmount, String vehiclenumber) {
                 this.orderId = orderId;
                 this.date = date;
                 this.status = status;
                 this.taxAmount = taxAmount;
-                this.uid = uid;
+                this.vehiclenumber = vehiclenumber;
         }
 
         public String getOrderId() {
@@ -38,8 +38,8 @@ public class Transactions {
                 return taxAmount;
         }
 
-        public String getUid() {
-                return uid;
+        public String getVehiclenumber() {
+                return vehiclenumber;
         }
 
 }

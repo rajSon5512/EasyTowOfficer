@@ -293,11 +293,11 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                 });
 
 
-        fireTickets(uid,mFine.getFine());
+        fireTickets(mVehicle.getId(),mFine.getFine());
 
     }
 
-    private void fireTickets(String uid, double fine) {
+    private void fireTickets(String vehicleNumber, double fine) {
 
         Map<String,String> transaction=new HashMap<String,String>();
 
@@ -305,7 +305,8 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         transaction.put(Transactions.DATE,date1.toString());
         transaction.put(Transactions.STATUS,"Pending");
         transaction.put(Transactions.TAXAMOUNT,""+fine);
-        transaction.put(Transactions.UID,uid);
+        transaction.put(Transactions.VNUMBER,vehicleNumber);
+
 
         FirebaseFirestore.getInstance().collection(Transactions.COLLECTION_NANE)
                 .add(transaction).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {

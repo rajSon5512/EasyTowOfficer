@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.EntryActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
+import com.knoxpo.rajivsonawala.easytow_officer.models.Transactions;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 
@@ -280,7 +281,7 @@ public class LandingFragment extends Fragment {
         } else if (requestCode == REQUEST_FOR_STATUS && resultCode == Activity.RESULT_OK && data.hasExtra(Intent.EXTRA_RETURN_RESULT)) {
 
             String newStatus = data.getStringExtra(Intent.EXTRA_RETURN_RESULT);
-            String documentId = data.getStringExtra(StatusShowFragment.EXTRA_DOCUMENT_ID);
+            final String documentId = data.getStringExtra(StatusShowFragment.EXTRA_DOCUMENT_ID);
 
             Log.d(TAG, "onActivityResult: "+newStatus);
 
@@ -297,6 +298,59 @@ public class LandingFragment extends Fragment {
             FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
                     .document(documentId)
                     .update(Ticket.FIELD_CURRENT_STATUS, newStatus);
+
+            FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
+                    .document(documentId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                            if(task.isSuccessful()){
+
+                                DocumentSnapshot documentSnapshot=task.getResult();
+
+                                FirebaseFirestore.getInstance().collection(Transactions.COLLECTION_NANE)
+                                        .whereEqualTo(Transactions.DATE,documentSnapshot.get(Ticket.FIELD_DATE))
+                                        .whereEqualTo (Transactions.VNUMBER,documentSnapshot.getString(Ticket.FIELD_VEHICLE_ID))
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                if(task.isSuccessful()){
+
+                                                    QuerySnapshot transactionDocument=task.getResult();
+
+                                                    List<DocumentSnapshot> transactionDocumentDocuments=transactionDocument.getDocuments();
+
+
+                                                    Log.d(TAG, "onComplete: "+transactionDocumentDocuments.size());
+
+
+/*
+                                                    for(int i=0;i<transactionDocumentDocuments.size();i++){
+
+                                                        String tid=transactionDocumentDocuments.get(i).getId();
+
+                                                        Log.d(TAG, "onTransactionId: "+tid);
+
+                                                    }
+*/
+
+
+                                                }
+
+
+                                            }
+                                        });
+
+
+                            }
+
+                        }
+                    });
+
 
             if(indexToChange >= 0){
                 mAdapter.notifyItemChanged(indexToChange);
@@ -362,7 +416,6 @@ public class LandingFragment extends Fragment {
             mBoundTicket = ticket;
 
             mIndexNumber.setText(String.valueOf(getAdapterPosition()+1));
-
             NormalUser vehicle = ticket.getVehicle();
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());
@@ -372,7 +425,6 @@ public class LandingFragment extends Fragment {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-YYYY");
             mDate.setText(simpleDateFormat.format(ticket.getDate()));
             mStatus.setText(ticket.getCurrentStatus());
-
         }
 
 
@@ -399,6 +451,7 @@ public class LandingFragment extends Fragment {
                     );
                     statusShowFragment.setTargetFragment(LandingFragment.this, REQUEST_FOR_STATUS);
                     statusShowFragment.show(fragmentManager, DIALOG_STATUS);
+
                     break;
             }
         }
