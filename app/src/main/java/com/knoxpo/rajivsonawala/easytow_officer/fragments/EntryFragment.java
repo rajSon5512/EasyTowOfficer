@@ -58,14 +58,16 @@ public class EntryFragment extends Fragment implements View.OnClickListener, Ada
     private static final int REQUEST_CAMERA_INFO =1;
     private NormalUser mNormalUser;
     private Spinner mSpinner;
+    private List<String> destination= new ArrayList<>();
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-
+        Toast.makeText(getContext(), ""+adapterView.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onItemSelected: "+adapterView.getItemAtPosition(i));
 
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -226,32 +228,31 @@ public class EntryFragment extends Fragment implements View.OnClickListener, Ada
 
         mImageButton.setOnClickListener(this);
         mFetchInfoBtn.setOnClickListener(this);
+        //mSpinner.setOnItemSelectedListener(this);
+
+        //destination=new ArrayList<>();
+
+        //destination=fetchSmcDestinations();
+
+        //ArrayAdapter arrayAdapter=new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,destination);
+
+        ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, destination);
+
+        //arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mSpinner.setAdapter(arrayAdapter1);
+
         mSpinner.setOnItemSelectedListener(this);
 
-        List<SmcParking>  smcParkings=new ArrayList<>();
+        fetchSmcDestinations();
 
-        smcParkings=fetchSmcDestinations();
-
-        List<String> location=new ArrayList<>();
-
-        for(SmcParking i:smcParkings){
-
-            location.add(i.getName());
-        }
-
-
-        ArrayAdapter arrayAdapter=new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,location);
-
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        mSpinner.setAdapter(arrayAdapter);
 
         return v;
     }
 
-    private List<SmcParking> fetchSmcDestinations() {
+    private void fetchSmcDestinations() {
 
-        final List<SmcParking> smcParkingslist=new ArrayList<>();
+       // final List<String> smcParkingslist=new ArrayList<>();
 
        FirebaseFirestore.getInstance().collection(SmcParking.COLLECTION_NAME)
                .get()
@@ -265,10 +266,14 @@ public class EntryFragment extends Fragment implements View.OnClickListener, Ada
 
                            List<DocumentSnapshot> documentSnapshot=querySnapshot.getDocuments();
 
+                           destination.clear();
                            for(DocumentSnapshot document:documentSnapshot){
 
                                SmcParking smcParking=new SmcParking(document);
-                               smcParkingslist.add(smcParking);
+                               destination.add(smcParking.getName());
+                               Log.d(TAG, "onComplete: "+smcParking.getName());
+
+                               ((ArrayAdapter)mSpinner.getAdapter()).notifyDataSetChanged();
                            }
 
                        }
@@ -277,8 +282,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener, Ada
                });
 
 
-
-    return smcParkingslist;
+    //return smcParkingslist;
     }
 
     private void init(View v) {

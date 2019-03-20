@@ -20,8 +20,8 @@ public class SmcParking {
 
         this.documentId=documentSnapshot.getId();
         this.name=documentSnapshot.getString(this.NAME);
-        this.latitude=documentSnapshot.getString(this.latitude);
-        this.longitude=documentSnapshot.getString(this.longitude);
+        this.latitude=documentSnapshot.getString(this.LAT);
+        this.longitude=documentSnapshot.getString(this.LONG);
     }
 
 
