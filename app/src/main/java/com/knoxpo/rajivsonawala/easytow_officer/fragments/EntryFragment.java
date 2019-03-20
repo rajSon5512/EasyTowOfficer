@@ -59,12 +59,14 @@ public class EntryFragment extends Fragment implements View.OnClickListener, Ada
     private NormalUser mNormalUser;
     private Spinner mSpinner;
     private List<String> destination= new ArrayList<>();
+    private String des=null;
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
         Toast.makeText(getContext(), ""+adapterView.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
         Log.d(TAG, "onItemSelected: "+adapterView.getItemAtPosition(i));
+        des= (String) adapterView.getItemAtPosition(i);
 
     }
 
@@ -334,6 +336,8 @@ public class EntryFragment extends Fragment implements View.OnClickListener, Ada
         ticketData.put(Ticket.FIELD_DATE, FieldValue.serverTimestamp());
         ticketData.put(Ticket.FIELD_CURRENT_STATUS, "pending");
         ticketData.put(Ticket.FIELD_FINE, mFine.getFine());
+        ticketData.put(Ticket.DESTINATION,des);
+
       /*  FirebaseFirestore.getInstance()
                 .collection("")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {

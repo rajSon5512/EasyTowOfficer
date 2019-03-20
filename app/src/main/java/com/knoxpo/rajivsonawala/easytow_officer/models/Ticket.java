@@ -18,6 +18,7 @@ public class Ticket {
     public static final String FIELD_DATE = "date";
     public static final String FIELD_RAISED_BY = "raised_by";
     public static final String FIELD_VEHICLE_ID = "vehicle_id";
+    public static final String DESTINATION="destination";
 
     /**
      * Member variables
@@ -28,9 +29,17 @@ public class Ticket {
     private String mRaisedBy;
     private String mVehicleId;
     private double mFine;
+    private String mDestination;
+
+    public void setDestination(String destination) {
+        mDestination = destination;
+    }
+
+    public String getDestination() {
+        return mDestination;
+    }
 
     private NormalUser mVehicle;
-
 
     /**
      * Content Firebase document snapshot to JAVA POJO
@@ -43,6 +52,7 @@ public class Ticket {
         mRaisedBy = snapshot.getString(FIELD_RAISED_BY);
         mVehicleId = snapshot.getString(FIELD_VEHICLE_ID);
         mFine = snapshot.getDouble(FIELD_FINE);
+
     }
 
     public String getId() {

@@ -47,5 +47,6 @@
     <string name="save">Save</string>
     <string name="norecordfound">EMPTY</string>
     <string name="movinglocation">Destination :</string>
+    <string name="vehicle_number">Vehicle Number</string>
 
 </resources>
