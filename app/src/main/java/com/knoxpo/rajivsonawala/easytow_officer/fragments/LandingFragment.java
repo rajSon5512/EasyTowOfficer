@@ -414,7 +414,7 @@ public class LandingFragment extends Fragment {
         public void bind(Ticket ticket) {
             mBoundTicket = ticket;
 
-            mIndexNumber.setText(getAdapterPosition()+1);
+            mIndexNumber.setText(String.valueOf(getAdapterPosition())+1);
             NormalUser vehicle = ticket.getVehicle();
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());

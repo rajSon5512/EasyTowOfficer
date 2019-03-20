@@ -14,9 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,19 +33,23 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.knoxpo.rajivsonawala.easytow_officer.R;
 import com.knoxpo.rajivsonawala.easytow_officer.activities.OcrCaptureActivity;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Fine;
 import com.knoxpo.rajivsonawala.easytow_officer.models.NormalUser;
+import com.knoxpo.rajivsonawala.easytow_officer.models.SmcParking;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Ticket;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Transactions;
 import com.knoxpo.rajivsonawala.easytow_officer.models.Vehicle;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class EntryFragment extends Fragment implements View.OnClickListener {
+public class EntryFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     /**
      * static declarations
      */
@@ -50,6 +57,20 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
     private static final int REQUEST_CAMERA_INFO =1;
     private NormalUser mNormalUser;
+    private Spinner mSpinner;
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 
     public interface Callback {
         void onDetailsEntered(String ticketId);
@@ -195,7 +216,6 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         db=FirebaseFirestore.getInstance();
         collectionReference=db.collection("tickets");
 
-
     }
 
     @Nullable
@@ -206,8 +226,59 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
 
         mImageButton.setOnClickListener(this);
         mFetchInfoBtn.setOnClickListener(this);
+        mSpinner.setOnItemSelectedListener(this);
+
+        List<SmcParking>  smcParkings=new ArrayList<>();
+
+        smcParkings=fetchSmcDestinations();
+
+        List<String> location=new ArrayList<>();
+
+        for(SmcParking i:smcParkings){
+
+            location.add(i.getName());
+        }
+
+
+        ArrayAdapter arrayAdapter=new ArrayAdapter(getContext(),android.R.layout.simple_spinner_item,location);
+
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        mSpinner.setAdapter(arrayAdapter);
 
         return v;
+    }
+
+    private List<SmcParking> fetchSmcDestinations() {
+
+        final List<SmcParking> smcParkingslist=new ArrayList<>();
+
+       FirebaseFirestore.getInstance().collection(SmcParking.COLLECTION_NAME)
+               .get()
+               .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                   @Override
+                   public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                       if(task.isSuccessful()){
+
+                           QuerySnapshot querySnapshot=task.getResult();
+
+                           List<DocumentSnapshot> documentSnapshot=querySnapshot.getDocuments();
+
+                           for(DocumentSnapshot document:documentSnapshot){
+
+                               SmcParking smcParking=new SmcParking(document);
+                               smcParkingslist.add(smcParking);
+                           }
+
+                       }
+
+                   }
+               });
+
+
+
+    return smcParkingslist;
     }
 
     private void init(View v) {
@@ -219,6 +290,8 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         mOwnerNameTV =v.findViewById(R.id.owner_name);
         mOwnerMobileNumberTV =v.findViewById(R.id.owner_mobile_number);
         mFineTV =v.findViewById(R.id.fine);
+        mSpinner=v.findViewById(R.id.locationselecter);
+
     }
 
     @Override
@@ -328,7 +401,6 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
         });
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

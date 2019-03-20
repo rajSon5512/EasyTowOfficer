@@ -64,8 +64,6 @@
 
         </LinearLayout>
 
-    </LinearLayout>
-
         <TextView
             android:id="@+id/vehicle_details"
             android:layout_width="wrap_content"
@@ -176,22 +174,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:autofillHints="@string/destination"
-                android:layout_alignRight="@+id/movinglocation">
+                android:layout_alignStart="@+id/movinglocation"
+                android:layout_below="@+id/movinglocation">
 
             </Spinner>
 
 
-            <Button
-                android:id="@+id/fetch_info_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_below="@+id/locationselecter"
-                android:text="@string/fetch_info" />
-
-
         </RelativeLayout>
 
+        <Button
+            android:id="@+id/fetch_info_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/fetch_info" />
+
+
+
+    </LinearLayout>
 
 
 </ScrollView>

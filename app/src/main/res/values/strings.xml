@@ -46,6 +46,6 @@
     <string name="mobile_number">OfficerInfomation</string>
     <string name="save">Save</string>
     <string name="norecordfound">EMPTY</string>
-    <string name="movinglocation">Destination</string>
+    <string name="movinglocation">Destination :</string>
 
 </resources>
