@@ -147,7 +147,6 @@ public class LandingFragment extends Fragment {
 
                             final Ticket ticket = new Ticket(documents.get(i));
 
-
                             FirebaseFirestore.getInstance()
                                     .collection(Vehicle.COLLECTION_NAME)
                                     .document(ticket.getVehicleId())
@@ -415,7 +414,7 @@ public class LandingFragment extends Fragment {
         public void bind(Ticket ticket) {
             mBoundTicket = ticket;
 
-            mIndexNumber.setText(String.valueOf(getAdapterPosition()+1));
+            mIndexNumber.setText(getAdapterPosition()+1);
             NormalUser vehicle = ticket.getVehicle();
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());
