@@ -10,6 +10,8 @@ public class Ticket {
 
     public static final String COLLECTION_NAME = "tickets";
 
+    public static final String DEFUALT_STATUS="pending";
+
     /**
      * Field names
      */

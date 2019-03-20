@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -40,7 +42,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -135,6 +139,7 @@ public class LandingFragment extends Fragment {
         collectionReference
                 .whereGreaterThan(Ticket.FIELD_DATE, date)
                 .whereEqualTo(Ticket.FIELD_RAISED_BY, uid)
+                .whereEqualTo(Ticket.FIELD_CURRENT_STATUS,Ticket.DEFUALT_STATUS)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -407,6 +412,7 @@ public class LandingFragment extends Fragment {
             mDelete.setOnClickListener(this);
             mStatus = itemView.findViewById(R.id.vehicle_status);
             mStatus.setOnClickListener(this);
+            mRight.setOnClickListener(this);
 
         }
 
@@ -452,8 +458,65 @@ public class LandingFragment extends Fragment {
                     statusShowFragment.show(fragmentManager, DIALOG_STATUS);
 
                     break;
+
+                case R.id.true_button:
+                    Toast.makeText(getContext(),"Raj",Toast.LENGTH_SHORT).show();
+
+                    FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
+                            .document(mBoundTicket.getId())
+                            .update(Ticket.FIELD_CURRENT_STATUS,"PAID");
+
+                    fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"PAID");
+
+
+                    mTickets.remove(getAdapterPosition()+1);
+
+                    mAdapter.notifyItemRemoved(getAdapterPosition());
+
+                    /* mRight.setEnabled(false);
+                    mDelete.setEnabled(false);
+                    mStatus.setText("PAID");
+                    mStatus.setEnabled(false);*/
+
+
+                    break;
+
             }
         }
+    }
+
+
+    private void fireTickets(String vehicleNumber, double fine,String status) {
+
+        Map<String,String> transaction=new HashMap<String,String>();
+
+        Date date1=new Date();
+        transaction.put(Transactions.DATE,date1.toString());
+        transaction.put(Transactions.STATUS,status);
+        transaction.put(Transactions.TAXAMOUNT,""+fine);
+        transaction.put(Transactions.VNUMBER,vehicleNumber);
+
+
+        FirebaseFirestore.getInstance().collection(Transactions.COLLECTION_NANE)
+                .add(transaction).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+
+                if(task.isSuccessful()){
+
+                    Log.d("fireTickets", "Transaction transfer ");
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("fireTickets", "onFailure: "+e.getMessage());
+            }
+        });
+
+        mAdapter.notifyDataSetChanged();
     }
 
     public void printArrayList() {
