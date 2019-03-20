@@ -11,7 +11,7 @@
     <string name="source">SOURCE</string>
     <string name="destination">DESTINATION</string>
     <string name="submit">Submit</string>
-    <string name="choose_option">Choose and option to enter vehicle number :</string>
+    <string name="choose_option">Choose one option to enter vehicle number :</string>
     <string name="vehicle_details">Details</string>
     <string name="vehicle_detail">Vehicle number.</string>
     <string name="entry_via_camera">Scan a vehicle number with the help of camera</string>
@@ -46,5 +46,6 @@
     <string name="mobile_number">OfficerInfomation</string>
     <string name="save">Save</string>
     <string name="norecordfound">EMPTY</string>
+    <string name="movinglocation">Destination</string>
 
 </resources>

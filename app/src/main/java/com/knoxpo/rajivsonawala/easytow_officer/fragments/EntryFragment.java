@@ -293,7 +293,7 @@ public class EntryFragment extends Fragment implements View.OnClickListener {
                 });
 
 
-        fireTickets(mVehicle.getId(),mFine.getFine());
+        //fireTickets(mVehicle.getId(),mFine.getFine());
 
     }
 

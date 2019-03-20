@@ -13,6 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="normal|italic"
             android:text="@string/choose_option"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -26,6 +27,11 @@
             android:paddingTop="30dp">
 
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
             <ImageButton
                 android:id="@+id/camera_Button"
                 style="@style/EntryButtonStyle"
@@ -37,15 +43,12 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
+<!--
             <ImageButton
                 android:id="@+id/text_Button"
                 style="@style/EntryButtonStyle"
                 android:src="@drawable/ic_title_black_24dp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+-->
 
 
             <ImageButton
@@ -53,14 +56,21 @@
                 style="@style/EntryButtonStyle"
                 android:src="@drawable/ic_mic_black_24dp" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
 
         </LinearLayout>
 
+    </LinearLayout>
 
         <TextView
             android:id="@+id/vehicle_details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/vehicle_details"
             android:textAppearance="?android:attr/listSeparatorTextViewStyle" />
 
@@ -73,7 +83,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -133,7 +143,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -152,32 +162,35 @@
                 android:padding="5dp"
                 android:textSize="@dimen/medium_font_size" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/movinglocation"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/fine"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@string/movinglocation"
+                android:textSize="@dimen/medium_font_size" />
 
+            <Spinner
+                android:id="@+id/locationselecter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints="@string/destination"
+                android:layout_alignRight="@+id/movinglocation">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            </Spinner>
 
 
             <Button
                 android:id="@+id/fetch_info_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_centerInParent="true"
+                android:layout_below="@+id/locationselecter"
                 android:text="@string/fetch_info" />
 
 
-
         </RelativeLayout>
-
-
-
-
-    </LinearLayout>
-
-
 
 
 
