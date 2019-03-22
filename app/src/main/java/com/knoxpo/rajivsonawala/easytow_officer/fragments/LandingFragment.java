@@ -300,6 +300,7 @@ public class LandingFragment extends Fragment {
                 }
             }
 
+
             FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
                     .document(documentId)
                     .update(Ticket.FIELD_CURRENT_STATUS, newStatus);
@@ -458,19 +459,7 @@ public class LandingFragment extends Fragment {
                     statusShowFragment.setTargetFragment(LandingFragment.this, REQUEST_FOR_STATUS);
                     statusShowFragment.show(fragmentManager, DIALOG_STATUS);
 
-                    if(mTickets.remove(getAdapterPosition())!=null){
 
-                        FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
-                                .document(mBoundTicket.getId())
-                                .update(Ticket.FIELD_CURRENT_STATUS,"PAID");
-
-                        fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"PAID");
-
-
-                        mAdapter.notifyItemRemoved(getAdapterPosition());
-
-                    }
-                    
                     break;
 
                 case R.id.true_button:
@@ -481,9 +470,9 @@ public class LandingFragment extends Fragment {
 
                         FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
                                 .document(mBoundTicket.getId())
-                                .update(Ticket.FIELD_CURRENT_STATUS,"PAID");
+                                .update(Ticket.FIELD_CURRENT_STATUS,"paid");
 
-                        fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"PAID");
+                        fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"paid");
 
 
                         mAdapter.notifyItemRemoved(getAdapterPosition());

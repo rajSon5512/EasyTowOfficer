@@ -93,6 +93,7 @@ public class StatusShowFragment extends DialogFragment implements AdapterView.On
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         Toast.makeText(getContext(),"OK",Toast.LENGTH_SHORT).show();
+
                         sendResult();
 
 
