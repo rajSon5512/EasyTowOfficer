@@ -462,22 +462,31 @@ public class LandingFragment extends Fragment {
                 case R.id.true_button:
                     Toast.makeText(getContext(),"Raj",Toast.LENGTH_SHORT).show();
 
-                    FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
-                            .document(mBoundTicket.getId())
-                            .update(Ticket.FIELD_CURRENT_STATUS,"PAID");
 
-                    fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"PAID");
+                    if(mTickets.remove(getAdapterPosition())!=null){
+
+                        FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
+                                .document(mBoundTicket.getId())
+                                .update(Ticket.FIELD_CURRENT_STATUS,"PAID");
+
+                        fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"PAID");
 
 
-                    mTickets.remove(getAdapterPosition()+1);
+                        mAdapter.notifyItemRemoved(getAdapterPosition());
+
+                    }
+
+                    /*//mAdapter.notifyDataSetChanged();
+
+                   // mTickets.remove(getAdapterPosition());
 
                     mAdapter.notifyItemRemoved(getAdapterPosition());
 
-                    /* mRight.setEnabled(false);
+                    *//* mRight.setEnabled(false);
                     mDelete.setEnabled(false);
                     mStatus.setText("PAID");
-                    mStatus.setEnabled(false);*/
-
+                    mStatus.setEnabled(false);*//*
+*/
 
                     break;
 
