@@ -1,5 +1,6 @@
 package com.knoxpo.rajivsonawala.easytow_officer.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -137,9 +138,9 @@ public class LandingFragment extends Fragment {
         Log.d(TAG, "onViewCreated: " + date);
 
         collectionReference
-                .whereGreaterThan(Ticket.FIELD_DATE, date)
                 .whereEqualTo(Ticket.FIELD_RAISED_BY, uid)
                 .whereEqualTo(Ticket.FIELD_CURRENT_STATUS,Ticket.DEFUALT_STATUS)
+                .whereEqualTo(Ticket.FIELD_DATE,date)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
