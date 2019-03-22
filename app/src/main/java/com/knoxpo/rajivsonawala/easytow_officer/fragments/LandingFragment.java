@@ -140,7 +140,7 @@ public class LandingFragment extends Fragment {
         collectionReference
                 .whereEqualTo(Ticket.FIELD_RAISED_BY, uid)
                 .whereEqualTo(Ticket.FIELD_CURRENT_STATUS,Ticket.DEFUALT_STATUS)
-                .whereEqualTo(Ticket.FIELD_DATE,date)
+                //.whereGreaterThan(Ticket.FIELD_DATE,date)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -421,7 +421,7 @@ public class LandingFragment extends Fragment {
         public void bind(Ticket ticket) {
             mBoundTicket = ticket;
 
-            mIndexNumber.setText(String.valueOf(getAdapterPosition())+1);
+            mIndexNumber.setText(String.valueOf(getAdapterPosition()+1));
             NormalUser vehicle = ticket.getVehicle();
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());
@@ -458,6 +458,19 @@ public class LandingFragment extends Fragment {
                     statusShowFragment.setTargetFragment(LandingFragment.this, REQUEST_FOR_STATUS);
                     statusShowFragment.show(fragmentManager, DIALOG_STATUS);
 
+                    if(mTickets.remove(getAdapterPosition())!=null){
+
+                        FirebaseFirestore.getInstance().collection(Ticket.COLLECTION_NAME)
+                                .document(mBoundTicket.getId())
+                                .update(Ticket.FIELD_CURRENT_STATUS,"PAID");
+
+                        fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"PAID");
+
+
+                        mAdapter.notifyItemRemoved(getAdapterPosition());
+
+                    }
+                    
                     break;
 
                 case R.id.true_button:

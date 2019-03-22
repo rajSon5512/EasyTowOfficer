@@ -130,6 +130,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mMobileNumber = itemView.findViewById(R.id.mobile_number);
             mOwnerName = itemView.findViewById(R.id.owner_name_view);
             mDate = itemView.findViewById(R.id.date_and_time);
+
+            mRight.setVisibility(itemView.GONE);
+            mDelete.setVisibility(itemView.GONE);
         }
 
         public void bind(NormalUser vehicle){
@@ -139,7 +142,6 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mDetails.setText(vehicle.getmVehicleNumber());
             mMobileNumber.setText(vehicle.getmMobileNumber());
             mOwnerName.setText(vehicle.getmOwnerName());
-
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
              mDate.setText(simpleDateFormat.format(dateSequence.get(getAdapterPosition())));
 
