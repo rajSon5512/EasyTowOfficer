@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -127,11 +128,10 @@ public class LandingFragment extends Fragment {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.AM, 1);
 
         Date date = calendar.getTime();
 
@@ -140,7 +140,7 @@ public class LandingFragment extends Fragment {
         collectionReference
                 .whereEqualTo(Ticket.FIELD_RAISED_BY, uid)
                 .whereEqualTo(Ticket.FIELD_CURRENT_STATUS,Ticket.DEFUALT_STATUS)
-                //.whereGreaterThan(Ticket.FIELD_DATE,date)
+                .whereGreaterThan(Ticket.FIELD_DATE,new Timestamp(date))
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
