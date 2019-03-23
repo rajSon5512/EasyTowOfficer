@@ -260,7 +260,7 @@ public class LandingFragment extends Fragment {
                                                     ticket.setVehicle(vehicle);
                                                     mTickets.add(0, ticket);
                                                     //mAdapter.notifyDataSetChanged();
-                                                    mAdapter.notifyItemInserted(0);
+                                                    mAdapter.notifyDataSetChanged();
 
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
@@ -472,7 +472,7 @@ public class LandingFragment extends Fragment {
                                 .document(mBoundTicket.getId())
                                 .update(Ticket.FIELD_CURRENT_STATUS,"paid");
 
-                        fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"paid");
+                        //fireTickets(mBoundTicket.getVehicleId(),mBoundTicket.getFine(),"paid");
 
 
                         mAdapter.notifyItemRemoved(getAdapterPosition());
