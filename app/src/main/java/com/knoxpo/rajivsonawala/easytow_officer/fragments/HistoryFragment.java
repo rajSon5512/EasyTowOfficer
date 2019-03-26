@@ -52,7 +52,8 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
     private Adapter mAdapter;
     private ArrayList mVehicleHistoryList=new ArrayList();
     private Date mDateForEntry = null;
-    private ArrayList<Date>  dateSequence=new ArrayList<Date>();
+    //private ArrayList<Date>  dateSequence=new ArrayList<Date>();
+    private ArrayList<Ticket> mTickets=new ArrayList<Ticket>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +121,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
         private ImageButton mDelete;
         private ImageButton mRight;
         private TextView mOwnerName, mMobileNumber, mDate;
+        private Button mStatusButton;
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
@@ -131,6 +133,7 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mOwnerName = itemView.findViewById(R.id.owner_name_view);
             mDate = itemView.findViewById(R.id.date_and_time);
 
+            mStatusButton=itemView.findViewById(R.id.vehicle_status);
             mRight.setVisibility(itemView.GONE);
             mDelete.setVisibility(itemView.GONE);
         }
@@ -143,14 +146,13 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
             mMobileNumber.setText(vehicle.getmMobileNumber());
             mOwnerName.setText(vehicle.getmOwnerName());
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-YYYY");
-             mDate.setText(simpleDateFormat.format(dateSequence.get(getAdapterPosition())));
+             mDate.setText(simpleDateFormat.format(mTickets.get(getAdapterPosition()).getDate()));
+            mStatusButton.setText(mTickets.get(getAdapterPosition()).getCurrentStatus());
 
         }
 
 
     }
-
-
 
 
     @Override
@@ -234,7 +236,9 @@ public class HistoryFragment extends Fragment implements View.OnClickListener {
                                 final Date documentDate=(Date)documentSnapshots.get(i).get("date");
 
                                 Log.d(TAG, "documentDate: "+documentDate);
-                                dateSequence.add(documentDate);
+                                Ticket ticket=new Ticket(documentSnapshots.get(i));
+                                mTickets.add(ticket);
+
 
                                 FirebaseFirestore.getInstance().collection(Vehicle.COLLECTION_NAME)
                                         .document(vehiclenumber).get()

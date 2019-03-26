@@ -260,7 +260,7 @@ public class LandingFragment extends Fragment {
                                                     ticket.setVehicle(vehicle);
                                                     mTickets.add(0, ticket);
                                                     //mAdapter.notifyDataSetChanged();
-                                                    mAdapter.notifyDataSetChanged();
+                                                    mAdapter.notifyDataSetChanged();  
 
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {
