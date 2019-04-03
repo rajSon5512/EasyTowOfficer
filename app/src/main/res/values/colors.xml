@@ -6,4 +6,5 @@
     <color name="colorprofile">#E0F7FA</color>
     <color name="colorBackground">#BBDEFB</color>
     <color name="colorBluebackground">#E0F7FA</color>
+    <color name="StatusChangeButton">#80CBC4</color>
 </resources>
