@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBluebackground">
 
 
     <LinearLayout
@@ -14,9 +15,9 @@
     <ImageView
         android:id="@+id/easy_tow_logo"
         android:layout_gravity="center"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@android:color/holo_orange_light">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tow_truck">
 
     </ImageView>
 
@@ -25,8 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingTop="30dp"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:text="@string/login"
+        android:textStyle="bold"
         />
 
      <EditText
@@ -35,7 +37,6 @@
          android:layout_gravity="center"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-
          android:hint="@string/email_message"/>
 
         <EditText

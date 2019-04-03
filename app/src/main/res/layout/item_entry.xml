@@ -1,4 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,8 +13,8 @@
 
     <TextView
         android:id="@+id/entry_no"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:ellipsize="start"
         android:singleLine="true"
@@ -24,16 +29,17 @@
 
         <TextView
             android:id="@+id/vehicle_details"
-            android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textStyle="bold"
+            android:padding="3dp"
             android:textSize="@dimen/big_font_size"
             tools:text="vehicle_number" />
 
         <TextView
             android:id="@+id/owner_name_view"
             android:layout_width="match_parent"
-            android:padding="5dp"
+            android:padding="2dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/medium_font_size"
             tools:text="owner name" />
@@ -41,7 +47,7 @@
 
         <TextView
             android:id="@+id/mobile_number"
-            android:padding="5dp"
+            android:padding="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/medium_font_size"
@@ -112,5 +118,14 @@
     </LinearLayout>
 
     </LinearLayout>
+
+</LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/common_google_signin_btn_text_dark_disabled" />
+
 
 </LinearLayout>

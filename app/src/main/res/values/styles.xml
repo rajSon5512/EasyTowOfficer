@@ -10,7 +10,7 @@
     <style name="EntryButtonStyle">
         <item name="android:layout_width">@dimen/entry_button_size</item>
         <item name="android:layout_height">@dimen/entry_button_size</item>
-        <item name="android:background">@android:color/holo_blue_bright</item>
+        <item name="android:background">@color/colorAccent</item>
     </style>
 
     <style name="bigfontsize">
